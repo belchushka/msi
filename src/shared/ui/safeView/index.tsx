@@ -9,11 +9,15 @@ export const SafeView: React.FC<IWithStyle & IWithChildren> = ({
   return (
     <View
       style={[
+        {backgroundColor: '#F9FAFB'},
         style,
         {
           paddingTop: StatusBar.currentHeight,
         },
       ]}>
+        <StatusBar 
+                barStyle="dark-content"
+        />
       {children}
     </View>
   );

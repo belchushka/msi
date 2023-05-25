@@ -79,7 +79,8 @@ export const OnboardingPage = () => {
 
     if(selectedFlow === 'test'){
       navigation.navigate(ROUTES.ONBOARDING_TEST)
-
+    } else{
+      navigation.navigate(ROUTES.HOME)
     }
   }
   return (
