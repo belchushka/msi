@@ -8,6 +8,7 @@ import {useStore} from 'effector-react';
 import {$authStore} from '@/entities/auth';
 import {HomePage} from '@/pages/home';
 import {OnboardingPage} from '@/pages/onboarding';
+import { TestScreen } from '@/pages/test';
 
 const Stack = createNativeStackNavigator();
 
@@ -31,7 +32,7 @@ export const Router = () => {
           <Stack.Screen name={ROUTES.ONBOARDIBG} component={OnboardingPage} />
           <Stack.Screen
             name={ROUTES.ONBOARDING_TEST}
-            component={OnboardingPage}
+            component={TestScreen}
           />
         </>
       )}

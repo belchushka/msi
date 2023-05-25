@@ -14,6 +14,8 @@ import StartTest from '@assets/images/imageStartWithTest.png';
 import styles from './styles';
 import {useTheme} from '@/shared/theme';
 import {IWithStyle} from '@/shared/types';
+import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from '@/shared/router';
 
 interface IFlowCard extends IWithStyle {
   image: ImageSourcePropType;
@@ -65,9 +67,21 @@ const FlowCard: React.FC<IFlowCard> = ({
 };
 
 export const OnboardingPage = () => {
+  const navigation = useNavigation()
   const [selectedFlow, setSelectedFlow] = useState<'test' | 'skip' | null>(
     null,
   );
+
+  const onClick = ()=>{
+    if(!selectedFlow){
+      return
+    }
+
+    if(selectedFlow === 'test'){
+      navigation.navigate(ROUTES.ONBOARDING_TEST)
+
+    }
+  }
   return (
     <SafeView style={styles.container}>
       <Container style={styles.container}>
@@ -91,7 +105,7 @@ export const OnboardingPage = () => {
           />
         </View>
         <View style={styles.bottom}>
-          <Button disabled={selectedFlow === null} variant="primary">
+          <Button onPress={onClick} disabled={selectedFlow === null} variant="primary">
             Далее
           </Button>
         </View>
