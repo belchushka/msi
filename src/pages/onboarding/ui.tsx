@@ -1,6 +1,6 @@
 import {Button, Container} from '@/shared/ui';
 import {SafeView} from '@/shared/ui/safeView';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   Image,
   ImageSourcePropType,
@@ -14,8 +14,9 @@ import StartTest from '@assets/images/imageStartWithTest.png';
 import styles from './styles';
 import {useTheme} from '@/shared/theme';
 import {IWithStyle} from '@/shared/types';
-import { useNavigation } from '@react-navigation/native';
-import { ROUTES } from '@/shared/router';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTES} from '@/shared/router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface IFlowCard extends IWithStyle {
   image: ImageSourcePropType;
@@ -67,22 +68,30 @@ const FlowCard: React.FC<IFlowCard> = ({
 };
 
 export const OnboardingPage = () => {
-  const navigation = useNavigation()
+  const navigation = useNavigation();
   const [selectedFlow, setSelectedFlow] = useState<'test' | 'skip' | null>(
     null,
   );
 
-  const onClick = ()=>{
-    if(!selectedFlow){
-      return
+  const onClick = () => {
+    if (!selectedFlow) {
+      return;
     }
 
-    if(selectedFlow === 'test'){
-      navigation.navigate(ROUTES.ONBOARDING_TEST)
-    } else{
-      navigation.navigate(ROUTES.HOME)
+
+    if (selectedFlow === 'test') {
+      navigation.navigate(ROUTES.ONBOARDING_TEST);
     }
-  }
+
+    if (selectedFlow === 'skip') {
+      navigation.navigate(ROUTES.HOME);
+      AsyncStorage.setItem('onboardingPassed', 'true');
+    }
+  };
+
+  useEffect(() => {
+    AsyncStorage.setItem('onboardingPassed', 'false');
+  }, []);
   return (
     <SafeView style={styles.container}>
       <Container style={styles.container}>
@@ -106,7 +115,10 @@ export const OnboardingPage = () => {
           />
         </View>
         <View style={styles.bottom}>
-          <Button onPress={onClick} disabled={selectedFlow === null} variant="primary">
+          <Button
+            onPress={onClick}
+            disabled={selectedFlow === null}
+            variant="primary">
             Далее
           </Button>
         </View>

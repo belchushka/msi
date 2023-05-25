@@ -5,7 +5,6 @@ import {Image, StatusBar, Text, TouchableOpacity, View} from 'react-native';
 import Sculpture from '@assets/images/loginSculpture.png';
 import styles from './styles';
 import {SigninForm} from '@/features/auth';
-import {KeyboardAwareScrollView} from 'react-native-keyboard-aware-scroll-view';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTES} from '@/shared/router';
 

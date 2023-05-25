@@ -1,91 +1,144 @@
-import React, { useState } from 'react';
-import { useTheme } from '@/shared/theme';
-import { SafeView } from '@/shared/ui/safeView';
-import { Text, TouchableOpacity, View } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {useTheme} from '@/shared/theme';
+import {SafeView} from '@/shared/ui/safeView';
+import {ActivityIndicator, Text, TouchableOpacity, View} from 'react-native';
 import styles from './styles';
-import { Button, Container } from '@/shared/ui';
-import { IWithStyle } from '@/shared/types';
+import {Button} from '@/shared/ui';
+import {IWithStyle} from '@/shared/types';
 import * as Progress from 'react-native-progress';
+import {$authHost} from '@/shared/api';
+import {useNavigation} from '@react-navigation/native';
+import {ROUTES} from '@/shared/router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 interface IAnswerForm extends IWithStyle {
-    answer: string,
-    onPress: () => void;
-    selected: boolean;
+  answer: string;
+  onPress: () => void;
+  selected: boolean;
 }
 
-const AnswerForm: React.FC<IAnswerForm> = ({
-    answer,
-    onPress,
-    selected,
-}) => {
-    const theme = useTheme();
-    return (
-        <TouchableOpacity
-            activeOpacity={0.9}
-            onPress={onPress}
-            style={[
-                styles.answerContainer,
-                selected && { borderColor: theme.colors.oceanic['400'], },
-            ]}>
-            <Text style={styles.answerText}>{answer}</Text>
-        </TouchableOpacity>
-    );
+const AnswerForm: React.FC<IAnswerForm> = ({answer, onPress, selected}) => {
+  const theme = useTheme();
+  return (
+    <TouchableOpacity
+      activeOpacity={0.9}
+      onPress={onPress}
+      style={[
+        styles.answerContainer,
+        selected && {borderColor: theme.colors.oceanic['400']},
+      ]}>
+      <Text style={styles.answerText}>{answer}</Text>
+    </TouchableOpacity>
+  );
 };
 
-
-
 export const TestScreen = () => {
-    const theme = useTheme()
+  const theme = useTheme();
 
-    const [selectedFlow, setSelectedFlow] = useState<'var1' | 'var2' | 'var3' | 'var4' | null>(
-        null,
-    );
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
 
-    const [progress, setProgress] = useState(0);
+  const [questions, setQuestions] = useState([]);
+  const [questionId, setQuestionId] = useState(0);
+  const [category, setCategory] = useState('');
+  const [quizzId, setQuizzId] = useState(0);
+  const navigation = useNavigation();
 
-    const handleButtonClick = () => {
-        if (progress < 1) {
-            setProgress(progress + 0.1);
-        }
-    };
+  const handleButtonClick = async () => {
+    if (questionId < questions.length - 1) {
+      setQuestionId(state => ++state);
+    } else {
+      try {
+        await $authHost.post('/quizzes/pass', {
+          id: quizzId,
+          answers: selectedAnswers.map(el => ({answer: el})),
+        });
+        await AsyncStorage.setItem('onboardingPassed', 'true');
 
+        navigation.navigate(ROUTES.HOME);
+      } catch (e) {}
+    }
+  };
+
+  const fetchOnboardingTest = async () => {
+    const {data} = await $authHost.get('/quizzes/register');
+    setQuestions(data.data.data);
+    setCategory(data.data.title);
+    setQuizzId(data.data.id);
+    setQuestionId(0);
+  };
+
+  const currentQuestion = questions[questionId] || null;
+
+  useEffect(() => {
+    fetchOnboardingTest();
+  }, []);
+
+  if (!currentQuestion) {
     return (
-        <SafeView style={styles.container}>
-            <View style={styles.top}>
-                <Progress.Bar width={null}
-                    borderRadius={40}
-                    borderColor='transparent'
-                    color={theme.colors.green['700']}
-                    height={20}
-                    progress={.2}
-                    unfilledColor={theme.colors.dark['100']}
-                />
-                <Container style={styles.questionContainer}>
-                    <Container style={[styles.categoryContainer, {
-                        backgroundColor: theme.colors.green.primary
-                    }]}>
-                        <Text style={styles.categoryQuestion}>
-                            Категория
-                        </Text>
-                    </Container>
-                    <Text style={styles.questionText}>
-                        Кто является автором пьессы Гамлет?
-                    </Text>
-                </Container>
-            </View>
+      <SafeView
+        style={{
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'white',
+        }}>
+        <ActivityIndicator size="large" color={theme.colors.green.primary} />
+      </SafeView>
+    );
+  }
 
-            <View style={styles.center}>
-                <AnswerForm selected={selectedFlow === 'var1'} answer='Жан Батист Мольер' onPress={() => setSelectedFlow('var1')}></AnswerForm>
-                <AnswerForm selected={selectedFlow === 'var2'} answer='Уильям Шекспир' onPress={() => setSelectedFlow('var2')}></AnswerForm>
-                <AnswerForm selected={selectedFlow === 'var3'} answer='Антон Чехов' onPress={() => setSelectedFlow('var3')}></AnswerForm>
-                <AnswerForm selected={selectedFlow === 'var4'} answer='Максим Горький' onPress={() => setSelectedFlow('var4')}></AnswerForm>
-            </View>
+  return (
+    <SafeView style={styles.container}>
+      <View style={styles.top}>
+        <Progress.Bar
+          width={null}
+          borderRadius={40}
+          borderColor="transparent"
+          color={theme.colors.green.primary}
+          height={20}
+          progress={questionId / questions.length}
+          unfilledColor={theme.colors.dark['100']}
+        />
+        <View style={styles.questionContainer}>
+          <View
+            style={[
+              styles.categoryContainer,
+              {
+                backgroundColor: theme.colors.green.primary,
+              },
+            ]}>
+            <Text style={styles.categoryQuestion}>{category}</Text>
+          </View>
+          <Text style={styles.questionText}>{currentQuestion?.question}</Text>
+        </View>
+        <View style={styles.center}>
+          {currentQuestion.answers.map((el, num) => {
+            return (
+              <AnswerForm
+                selected={selectedAnswers[questionId] === el}
+                key={num}
+                answer={el}
+                onPress={() =>
+                  setSelectedAnswers(state => {
+                    const cp = [...state];
+                    cp[questionId] = el;
+                    return cp;
+                  })
+                }
+              />
+            );
+          })}
+        </View>
+      </View>
 
-            <View style={styles.bottom}>
-                <Button variant='primary' onPress={handleButtonClick}>
-                    Ответить
-                </Button>
-            </View>
-        </SafeView>
-    )
+      <View style={styles.bottom}>
+        <Button
+          disabled={!selectedAnswers[questionId]}
+          variant="primary"
+          onPress={handleButtonClick}>
+          Ответить
+        </Button>
+      </View>
+    </SafeView>
+  );
 };

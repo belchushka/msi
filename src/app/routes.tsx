@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {InitPage} from '@/pages/init';
 import {ROUTES} from '@/shared/router';
@@ -20,6 +20,8 @@ import MapsIcon from '@assets/icons/Maps'
 import MapsIconActive from '@assets/icons/MapsActive'
 import ProfileIcon from '@assets/icons/Profile'
 import ProfileIconActive from '@assets/icons/ProfileActive'
+import {useNavigation} from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -108,13 +110,28 @@ const TabsPage = ()=>{
     </Tab.Navigator>
     </SafeView>
   )
-}
+};
 
 export const Router = () => {
   const {isAuth} = useStore($authStore);
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    (async () => {
+      if (navigation) {
+        const onboardingPassed =
+          (await AsyncStorage.getItem('onboardingPassed')) === 'true';
+        console.log(onboardingPassed);
+        if (!onboardingPassed) {
+          navigation.navigate(ROUTES.ONBOARDIBG);
+        }
+      }
+    })();
+  }, [navigation]);
+
   return (
     <Stack.Navigator
-      initialRouteName={isAuth ? ROUTES.ONBOARDIBG : ROUTES.INITIAL}
+      initialRouteName={isAuth ? ROUTES.HOME : ROUTES.INITIAL}
       screenOptions={{
         headerShown: false,
       }}>
@@ -128,10 +145,7 @@ export const Router = () => {
         <>
           <Stack.Screen name={ROUTES.HOME} component={TabsPage} />
           <Stack.Screen name={ROUTES.ONBOARDIBG} component={OnboardingPage} />
-          <Stack.Screen
-            name={ROUTES.ONBOARDING_TEST}
-            component={TestScreen}
-          />
+          <Stack.Screen name={ROUTES.ONBOARDING_TEST} component={TestScreen} />
         </>
       )}
     </Stack.Navigator>

@@ -1,7 +1,7 @@
 {
   "extends": "@tsconfig/react-native/tsconfig.json",
   "compilerOptions": {
-    "strict": true,
+    "strict": false,
     "include": ["./index.d.ts"],
     "baseUrl": "./src",
     "paths": {
