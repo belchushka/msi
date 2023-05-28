@@ -12,7 +12,8 @@ export enum ROUTES {
   MAP_SCREEN = 'map_screen',
   LESSON_SCREEN = 'lesson_screen',
   NEWS_SCREEN = 'news_screen',
-  PROFILE_PAGE = 'profile_page'
+  PROFILE_PAGE = 'profile_page',
+  CREATE_NEWS = 'create_news'
 }
 
 const navigationRef = createNavigationContainerRef();

@@ -7,11 +7,16 @@ import Video from 'react-native-video';
 
 export const LessonPage = ({route}) => {
   const {lesson} = route.params;
+  console.log("url here")
+  console.log(lesson.lessions)
+  console.log(lesson?.lessions[0]?.url)
+
 
   return (
     <SafeView style={{flex: 1}}>
       <View style={styles.top}>
-        <Video source={{uri: lesson.video}} />
+        
+        <Video source={{uri: lesson?.lessions[0]?.url}} />
       </View>
 
       <View style={styles.main}>

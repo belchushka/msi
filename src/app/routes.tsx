@@ -27,6 +27,7 @@ import { MapPage } from '@/pages/maps';
 import { LessonPage } from '@/pages/lessonPage';
 import { NewsPage } from '@/pages/news';
 import { ProfilePage } from '@/pages/profile';
+import { AddNewsPage } from '@/pages/addNews';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -154,6 +155,7 @@ export const Router = () => {
           <Stack.Screen name={ROUTES.COURSE_SCREEN} component={CoursePage}/>
           <Stack.Screen name={ROUTES.LESSON_SCREEN} component={LessonPage}/>
           <Stack.Screen name={ROUTES.MAP_SCREEN} component={MapPage}/>
+          <Stack.Screen name={ROUTES.CREATE_NEWS} component={AddNewsPage}/>
         </>
       )}
     </Stack.Navigator>

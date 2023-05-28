@@ -14,11 +14,14 @@ export const MapPage = () => {
 
     useEffect(()=>{
         (async ()=>{
+          const {dataq} = await $authHost.get('/parse/allexcel');
+          console.log(dataq)
             
           const newScoolCords = []
 
-          for (let i=303; i<=453; i++){
+          for (let i=1; i<=100; i++){
             const {data} = await $authHost.get('/parse/school', {params: {id: i}});
+            console.log(data)
 
             if (data.data.coordinates[0].length>0){
                 const schoolName = data.data.name
@@ -57,7 +60,7 @@ export const MapPage = () => {
 
     console.log(schoolsCoords)
 
-    if (schoolsCoords.length != 11){
+    if (!schoolsCoords.length){
         return <ActivityIndicator/>
     }
 
@@ -90,9 +93,7 @@ export const MapPage = () => {
                 snapPoints={snapPoints}
                 onChange={handleSheetChanges}>
                 {selectedSchool==null ? 
-                    <View>
-                        
-                    </View>
+                    null
                 : 
                 <View style={{padding: 12}}>
                     <Text style={{color: 'black', fontSize: 24, fontWeight: 'bold'}}>{selectedSchool != null ? selectedSchool["name"] : ""} </Text>

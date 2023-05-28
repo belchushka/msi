@@ -12,12 +12,14 @@ import {
 } from 'react-native';
 import styles from './styles';
 import {Container} from '@/shared/ui';
+import { ROUTES } from '@/shared/router';
 
 interface INewsCard {
   newsElement: any;
 }
 
 const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
+  console.log(newsElement)
   const [opened, setOpened] = useState(false);
   return (
     <View style={styles.news_container}>
@@ -35,7 +37,7 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
             paddingLeft: 8,
             fontWeight: '500',
           }}>
-          {newsElement.authorname}
+          {"Школа 1"}
         </Text>
       </View>
       <Text style={styles.news_text}>
@@ -76,10 +78,16 @@ export const NewsPage = () => {
     return <ActivityIndicator />;
   }
 
+  const navigation = useNavigation();
+
   return (
     <SafeView style={{flex: 1}}>
       <Container>
-        <Text style={styles.header}>Новости</Text>
+        <TouchableOpacity onPress={() => {
+         
+        }}>
+          <Text style={styles.header}>Новости</Text>
+        </TouchableOpacity>
         <ScrollView
           contentContainerStyle={{
             paddingVertical: 20,
@@ -91,7 +99,7 @@ export const NewsPage = () => {
           {news.map((newsElement, i) => {
             return <NewsCard key={i} newsElement={newsElement} />;
           })}
-          ;
+          
         </ScrollView>
       </Container>
     </SafeView>

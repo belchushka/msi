@@ -1,7 +1,7 @@
 import { Container, GradientBackground } from '@/shared/ui';
 import {SafeView} from '@/shared/ui/safeView';
-import React, { useEffect, useState } from 'react';
-import {View, Text, ScrollView, Dimensions} from 'react-native';
+import React, { useEffect, useLayoutEffect, useState } from 'react';
+import {View, Text, ScrollView, Dimensions, Image} from 'react-native';
 import styles from './styles';
 import { useTheme } from '@/shared/theme';
 import { GradientHorisontal } from '@/shared/ui/gradientHorisontal';
@@ -16,12 +16,13 @@ import SelectDropdown from 'react-native-select-dropdown';
 import { $host } from '@/shared/api';
 import { useStore } from 'effector-react';
 import { $authStore } from '@/entities/auth';
+import Heart from "@assets/images/heart_icon.png"
+import Diamond from "@assets/images/diamond_icon.png"
 
 
 export const HomePage = () => {
   const {user} = useStore($authStore)
-  const userDefaultCategory = user?.categories.data?.[0]?.label || null
-  const [selectedCategory, setSelectedCategory] = useState<any>(null)
+  const [selectedCategory, setSelectedCategory] = useState<any>("Гитара")
 
   const [categories, setCategories] = useState([])
 
@@ -29,6 +30,11 @@ export const HomePage = () => {
 
   const theme = useTheme();
   const navigation = useNavigation();
+
+  useLayoutEffect(()=>{
+    if (!user?.categories.data?.[0]?.label) return
+    setSelectedCategory(user?.categories.data?.[0]?.label)
+  }, [user?.categories.data?.[0]?.label])
 
   useEffect(()=>{
     (async ()=>{
@@ -67,7 +73,7 @@ export const HomePage = () => {
                   <ExpandIcon/>
                 </View>
               }}
-              defaultValue={userDefaultCategory}
+              defaultValue={"Гитара"}
               onSelect={(selectedItem, index) => {
                 setSelectedCategory(selectedItem)
               }}
@@ -85,11 +91,11 @@ export const HomePage = () => {
           
           </View>
           <View style={{flexDirection: 'row', alignItems: 'center'}}>
-            <HeartIcon/>
+            <Image source={Heart}/>
             <Text style={{marginHorizontal: 5}}>5</Text>
-            <DiamondIcon/>
+            <Image source={Diamond}/>
             <Text style={{marginHorizontal: 5}}>20</Text>
-            <DotsIcon></DotsIcon>
+            <DotsIcon style={{paddingHorizontal: 10}}></DotsIcon>
           </View>
         </GradientHorisontal>
       </View>

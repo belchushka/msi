@@ -11,10 +11,13 @@ export const useInit = () => {
     (async () => {
       setLoading(true);
       const accessToken = await AsyncStorage.getItem('accessToken');
-      if (accessToken) {
-        setIsAuth(true);
-        await getMe()
-      }
+      try {
+        if (accessToken) {
+          setIsAuth(true);
+          await getMe()
+        }
+      }catch (e){}
+      
       setLoading(false);
     })();
   }, []);
