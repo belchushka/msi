@@ -1,4 +1,4 @@
-import {$host} from '@/shared/api';
+import {$authHost, $host} from '@/shared/api';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {AxiosError} from 'axios';
 import {createEffect} from 'effector';
@@ -45,7 +45,15 @@ const loginFx = createEffect<LoginParams, void, AxiosError>({
   },
 });
 
+const getMeFx = createEffect({
+  handler: async ()=>{
+    const {data} = await $authHost.get('/users/me');
+    return data.data
+  }
+})
+
 export const AuthApi = {
   registerFx,
   loginFx,
+  getMeFx
 };

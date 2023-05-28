@@ -8,6 +8,11 @@ export enum ROUTES {
   HOME = 'home',
   ONBOARDIBG = 'onboarding',
   ONBOARDING_TEST = 'onboarding_test',
+  COURSE_SCREEN = 'course_screen',
+  MAP_SCREEN = 'map_screen',
+  LESSON_SCREEN = 'lesson_screen',
+  NEWS_SCREEN = 'news_screen',
+  PROFILE_PAGE = 'profile_page'
 }
 
 const navigationRef = createNavigationContainerRef();

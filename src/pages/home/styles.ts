@@ -9,11 +9,16 @@ export default StyleSheet.create({
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
-    alignSelf: 'center'
+    alignSelf: 'center',
+    paddingLeft: 25,
   },
 
   main: {
     flex: 9
+  },
+
+  progress: {
+    
   }
   
 });

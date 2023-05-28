@@ -110,6 +110,8 @@ sample({
   ],
 });
 
+registerFx.failData.watch((e)=>console.log(e.response.data))
+
 export {
   form,
   $currentStep,

@@ -22,6 +22,11 @@ import ProfileIcon from '@assets/icons/Profile'
 import ProfileIconActive from '@assets/icons/ProfileActive'
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CoursePage } from '@/pages/coursePage';
+import { MapPage } from '@/pages/maps';
+import { LessonPage } from '@/pages/lessonPage';
+import { NewsPage } from '@/pages/news';
+import { ProfilePage } from '@/pages/profile';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator()
@@ -96,15 +101,15 @@ const TabsPage = ()=>{
       <Tab.Screen options={{
         tabBarLabel: 'Новости',
         tabBarIcon: ({focused})=> focused ? <NewsIconActive/> : <NewsIcon/>
-      }} name='test' component={Test}/>
+      }} name='News' component={NewsPage}/>
       <Tab.Screen options={{
         tabBarLabel: 'Карты',
         tabBarIcon: ({focused})=> focused ? <MapsIconActive/> : <MapsIcon/>
-      }} name='test2' component={Test}/>
+      }} name='Maps' component={MapPage}/>
       <Tab.Screen options={{
         tabBarLabel: 'Профиль',
         tabBarIcon: ({focused})=> focused ? <ProfileIconActive/> : <ProfileIcon/>
-      }} name='test3' component={Test}/>
+      }} name='Profile' component={ProfilePage}/>
       
 
     </Tab.Navigator>
@@ -146,6 +151,9 @@ export const Router = () => {
           <Stack.Screen name={ROUTES.HOME} component={TabsPage} />
           <Stack.Screen name={ROUTES.ONBOARDIBG} component={OnboardingPage} />
           <Stack.Screen name={ROUTES.ONBOARDING_TEST} component={TestScreen} />
+          <Stack.Screen name={ROUTES.COURSE_SCREEN} component={CoursePage}/>
+          <Stack.Screen name={ROUTES.LESSON_SCREEN} component={LessonPage}/>
+          <Stack.Screen name={ROUTES.MAP_SCREEN} component={MapPage}/>
         </>
       )}
     </Stack.Navigator>
