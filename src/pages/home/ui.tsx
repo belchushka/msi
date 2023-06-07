@@ -7,8 +7,6 @@ import { useTheme } from '@/shared/theme';
 import { GradientHorisontal } from '@/shared/ui/gradientHorisontal';
 import DotsIcon from '@assets/icons/Dots'
 import ExpandIcon from '@assets/icons/Expand'
-import HeartIcon from '@assets/icons/Heart'
-import DiamondIcon from '@assets/icons/Diamond'
 import { CourseCard } from '@/entities/course';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTES} from '@/shared/router';
