@@ -131,7 +131,7 @@ export const CoursePage = ({route}) => {
                         lession,
                       });
                     }}>
-                    <Lesson title={lession.title} />
+                    <Lesson image={lession.coverimage} title={lession.title} />
                   </TouchableOpacity>
                 );
               })}

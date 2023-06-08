@@ -2,18 +2,13 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import styles from './styles';
 import {ILesson} from './types';
-import { Container } from '../container';
+import {Image} from 'react-native';
 
-export const Lesson: React.FC<ILesson> = ({
-  children,
-  title,
-  style,
-  ...props
-}) => {
+export const Lesson: React.FC<ILesson> = ({title, image, style, ...props}) => {
   return (
     <View {...props} style={[style, styles.container]}>
-        <Container style={styles.image}></Container>
-        <Text style={styles.header}>{title}</Text>
+      <Image style={styles.image} source={{uri: image}} />
+      <Text style={styles.header}>{title}</Text>
     </View>
   );
 };

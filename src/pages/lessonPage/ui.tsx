@@ -7,11 +7,18 @@ import Video from 'react-native-video';
 
 export const LessonPage = ({route}) => {
   const params = route.params;
+  console.log(params.lession);
 
   return (
     <SafeView style={{flex: 1}}>
       <View style={styles.top}>
         <Video
+          style={{
+            height: '100%',
+            width: '100%',
+          }}
+          resizeMode="contain"
+          controls
           onError={console.log}
           source={{uri: params.lession?.lessions[0]?.url}}
         />
