@@ -14,11 +14,8 @@ export default StyleSheet.create({
   },
 
   main: {
-    flex: 9
+    flex: 9,
   },
 
-  progress: {
-    
-  }
-  
+  progress: {},
 });

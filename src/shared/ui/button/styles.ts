@@ -5,7 +5,7 @@ export default StyleSheet.create({
     paddingVertical: 14,
     paddingHorizontal: 20,
     alignItems: 'center',
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: 'white',
     borderRadius: 8,
   },
@@ -24,5 +24,6 @@ export default StyleSheet.create({
   },
   text: {
     fontSize: 20,
+    fontWeight: '700',
   },
 });

@@ -1,6 +1,6 @@
 import {SafeView} from '@/shared/ui/safeView';
 import React, {useEffect, useState} from 'react';
-import {useNavigation, useTheme} from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import {$host} from '@/shared/api';
 import {
   ActivityIndicator,
@@ -12,14 +12,16 @@ import {
 } from 'react-native';
 import styles from './styles';
 import {Container} from '@/shared/ui';
-import { ROUTES } from '@/shared/router';
+import {ROUTES} from '@/shared/router';
+import {RefreshControl} from 'react-native-gesture-handler';
+import {useTheme} from '@/shared/theme';
+import IconPlus from '@assets/icons/Plus';
 
 interface INewsCard {
   newsElement: any;
 }
 
 const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
-  console.log(newsElement)
   const [opened, setOpened] = useState(false);
   return (
     <View style={styles.news_container}>
@@ -34,10 +36,10 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
           style={{
             color: 'black',
             fontSize: 20,
-            paddingLeft: 8,
+            marginLeft: 16,
             fontWeight: '500',
           }}>
-          {"Школа 1"}
+          {newsElement.authorname}
         </Text>
       </View>
       <Text style={styles.news_text}>
@@ -48,14 +50,18 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
           : newsElement.text}
       </Text>
       <TouchableOpacity onPress={() => setOpened(state => !state)}>
-        <Text style={{color: '#A4CE57', fontSize: 20, paddingBottom: 20}}>
+        <Text style={{color: '#A4CE57', fontSize: 16, paddingBottom: 10}}>
           {!opened ? 'Читать далее' : 'Свернуть'}
         </Text>
       </TouchableOpacity>
-      <Text style={{color: '#A7A9AB'}}>{newsElement.createdAt}</Text>
+      <Text style={{color: '#A7A9AB'}}>
+        {new Intl.DateTimeFormat('ru-RU').format(
+          new Date(newsElement.createdAt),
+        )}
+      </Text>
       {newsElement.image == null || newsElement.image.length < 10 ? null : (
         <Image
-          style={{height: 200, width: 340}}
+          style={{width: '100%', aspectRatio: '16/9', borderRadius: 5}}
           source={{uri: newsElement.image}}
         />
       )}
@@ -65,43 +71,87 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
 
 export const NewsPage = () => {
   const [news, setNews] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
+  const theme = useTheme();
+  const navigation = useNavigation();
+
+  const fetch = async () => {
+    const {data} = await $host.get('/feed/allposts');
+    setNews(data.data);
+  };
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetch();
+    setRefreshing(false);
+  };
 
   useEffect(() => {
     (async () => {
-      const {data} = await $host.get('/feed/allposts');
-      console.log(data);
-      setNews(data.data);
+      setLoading(true);
+      await fetch();
+      setLoading(false);
     })();
   }, []);
 
-  if (!news) {
-    return <ActivityIndicator />;
-  }
-
-  const navigation = useNavigation();
-
   return (
-    <SafeView style={{flex: 1}}>
-      <Container>
-        <TouchableOpacity onPress={() => {
-         
-        }}>
-          <Text style={styles.header}>Новости</Text>
-        </TouchableOpacity>
-        <ScrollView
-          contentContainerStyle={{
-            paddingVertical: 20,
-            gap: 20,
-            flexDirection: 'column',
-            justifyContent: 'center',
-            flexWrap: 'wrap',
+    <View style={{flex: 1}}>
+      <View style={styles.header}>
+        <Container
+          style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'space-between',
           }}>
-          {news.map((newsElement, i) => {
-            return <NewsCard key={i} newsElement={newsElement} />;
-          })}
-          
-        </ScrollView>
-      </Container>
-    </SafeView>
+          <Text style={styles.header_text}>Новости</Text>
+          <TouchableOpacity
+            hitSlop={20}
+            activeOpacity={0.6}
+            onPress={() => navigation.navigate(ROUTES.CREATE_NEWS)}
+            style={{
+              width: 28,
+              height: 28,
+            }}>
+            <IconPlus />
+          </TouchableOpacity>
+        </Container>
+      </View>
+
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingVertical: 20,
+          position: 'relative',
+        }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        {loading ? (
+          <View
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <ActivityIndicator
+              size="large"
+              color={theme.colors.green.primary}
+            />
+          </View>
+        ) : (
+          <Container
+            style={{
+              gap: 20,
+            }}>
+            {news.map((newsElement, i) => {
+              return <NewsCard key={i} newsElement={newsElement} />;
+            })}
+          </Container>
+        )}
+      </ScrollView>
+    </View>
   );
 };

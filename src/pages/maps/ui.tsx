@@ -1,107 +1,131 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import {View, Text, ScrollView, Dimensions, Image, ActivityIndicator} from 'react-native';
-import YaMap, { Marker } from 'react-native-yamap';
-import SchoolIcon from '@assets/images/school_icon.png'
+import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {View, Text, Image, Linking} from 'react-native';
+import YaMap, {Marker} from 'react-native-yamap';
+import SchoolIcon from '@assets/images/school_icon.png';
 import BottomSheet from '@gorhom/bottom-sheet';
-import { $authHost, $host } from '@/shared/api';
-
-
+import {$authHost} from '@/shared/api';
+import {useTheme} from '@/shared/theme';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Button} from '@/shared/ui';
 
 export const MapPage = () => {
+  const [schools, setSchools] = useState([]);
+  const [selectedSchoolId, setSelectedSchoolId] = useState<any>(null);
 
-    const [schoolsCoords, setSchoolsCoords] = useState([]);
-    const [selectedSchool, setSelectedSchool] = useState<any>(null)
+  const bottomSheetRef = useRef<BottomSheet>(null);
+  const theme = useTheme();
 
-    useEffect(()=>{
-        (async ()=>{
-          const {dataq} = await $authHost.get('/parse/allexcel');
-          console.log(dataq)
-            
-          const newScoolCords = []
+  // variables
+  const snapPoints = useMemo(() => ['1%', '30%', '60%'], []);
 
-          for (let i=1; i<=100; i++){
-            const {data} = await $authHost.get('/parse/school', {params: {id: i}});
-            console.log(data)
+  // callbacks
+  const handleSheetChanges = useCallback((index: number) => {
+    console.log('handleSheetChanges', index);
+  }, []);
 
-            if (data.data.coordinates[0].length>0){
-                const schoolName = data.data.name
+  useEffect(() => {
+    (async () => {
+      try {
+        const {data} = await $authHost.get('/parse/fullexcel', {
+          params: {
+            excelid: 1,
+          },
+        });
+        if (data.data.schools) {
+          setSchools(
+            data.data.schools.filter(
+              (el: any) => el.coordinates !== 'null, null',
+            ),
+          );
+        }
+      } catch (e) {}
+    })();
+  }, []);
 
-                const chunks = data.data.chunks.data
-                const options = []
-
-                for (let j = 0; j < chunks[0].length; j++){
-                    const currentChunk = chunks[0][j][0];
-                    if (currentChunk != null && currentChunk.length > 3 && !options.includes(currentChunk)){
-                        options.push(currentChunk)
-                    }
-                }
-                newScoolCords.push({"coords": data.data.coordinates[0].split(", ").map(str => parseFloat(str)), "id" : i, "name": schoolName, "options": options});
-                
-            }
-          }
-
-          setSchoolsCoords(newScoolCords);
-          console.log(newScoolCords)
-          console.log(newScoolCords.length)
-
-        })()
-    },[])
-
-
-    const bottomSheetRef = useRef<BottomSheet>(null);
-
-    // variables
-    const snapPoints = useMemo(() => ['1%', '30%'], []);
-
-    // callbacks
-    const handleSheetChanges = useCallback((index: number) => {
-        console.log('handleSheetChanges', index);
-    }, []);
-
-    console.log(schoolsCoords)
-
-    if (!schoolsCoords.length){
-        return <ActivityIndicator/>
+  const selectedSchool = useMemo(() => {
+    if (selectedSchoolId) {
+      return schools[selectedSchoolId];
     }
+    return null;
+  }, [schools, selectedSchoolId]);
 
-    return (
-        <View style={{flex: 1}}>
-            <YaMap  initialRegion={{
-                lat: 55.75,
-                lon: 37.6,
-                zoom: 10,
-                azimuth: 80,
-                tilt: 100
-            }}   showUserPosition mapType='vector' style={{flex: 1}}>           
-                
-        
-                
-                {schoolsCoords.map((school, i)=>{
-                    console.log("works")
-                    return <Marker point={{ lat: school["coords"][0], lon: school["coords"][1] }} onPress={()=>{
-                        setSelectedSchool(schoolsCoords[i])
-                        bottomSheetRef.current.expand()
-                    }}>
-                        <Image source={SchoolIcon} style={{width: 40, height: 40}}/>
-                    </Marker>
-                })}
-            
-            </YaMap>
-            <BottomSheet
-                ref={bottomSheetRef}
-                index={1}
-                snapPoints={snapPoints}
-                onChange={handleSheetChanges}>
-                {selectedSchool==null ? 
-                    null
-                : 
-                <View style={{padding: 12}}>
-                    <Text style={{color: 'black', fontSize: 24, fontWeight: 'bold'}}>{selectedSchool != null ? selectedSchool["name"] : ""} </Text>
-                    <Text style={{color: '#A4CE57', fontSize: 18, paddingTop: 8}}>Направления обучения</Text>
-                    <Text style={{color: "black", fontSize: 18, paddingTop: 8}}>{selectedSchool != null ? "- "+selectedSchool["options"].join("\n\n- ") : ""}</Text>
-                </View>
-            }
-            </BottomSheet>
-        </View>
-    );
+  console.log(schools);
+  return (
+    <View style={{flex: 1}}>
+      <YaMap
+        initialRegion={{
+          lat: 55.75,
+          lon: 37.6,
+          zoom: 10,
+          azimuth: 80,
+          tilt: 100,
+        }}
+        showUserPosition
+        mapType="vector"
+        style={{flex: 1}}>
+        {schools.map((school: any, i) => {
+          const coords = school.coordinates
+            .split(', ')
+            .map(el => parseFloat(el));
+          return (
+            <Marker
+              point={{lat: coords[0], lon: coords[1]}}
+              onPress={() => {
+                setSelectedSchoolId(i);
+                bottomSheetRef.current.expand();
+              }}>
+              <Image source={SchoolIcon} style={{width: 40, height: 40}} />
+            </Marker>
+          );
+        })}
+      </YaMap>
+      <BottomSheet
+        ref={bottomSheetRef}
+        index={-1}
+        enablePanDownToClose
+        snapPoints={snapPoints}
+        onChange={handleSheetChanges}>
+        {selectedSchool && (
+          <View style={{padding: 12}}>
+            <Text style={{color: 'black', fontSize: 24, fontWeight: 'bold'}}>
+              {selectedSchool.name}{' '}
+            </Text>
+            <Text
+              style={{
+                color: 'black',
+                marginTop: 10,
+              }}>
+              {selectedSchool.address}
+            </Text>
+            <TouchableOpacity
+              onPress={() => Linking.openURL(`tel:${selectedSchool.phone}`)}>
+              <Text
+                style={{
+                  color: theme.colors.green.primary,
+                  marginTop: 10,
+                  fontSize: 16,
+                  fontWeight: '600',
+                }}>
+                {selectedSchool.phone}
+              </Text>
+            </TouchableOpacity>
+            <Text
+              style={{
+                color: 'black',
+                marginTop: 10,
+              }}>
+              {selectedSchool.email}
+            </Text>
+            <Button
+              style={{
+                marginTop: 40,
+              }}
+              variant="primary">
+              Записаться на занятие
+            </Button>
+          </View>
+        )}
+      </BottomSheet>
+    </View>
+  );
 };

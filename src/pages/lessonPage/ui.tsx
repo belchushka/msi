@@ -6,23 +6,21 @@ import {Button} from '@/shared/ui';
 import Video from 'react-native-video';
 
 export const LessonPage = ({route}) => {
-  const {lesson} = route.params;
-  console.log("url here")
-  console.log(lesson.lessions)
-  console.log(lesson?.lessions[0]?.url)
-
+  const params = route.params;
 
   return (
     <SafeView style={{flex: 1}}>
       <View style={styles.top}>
-        
-        <Video source={{uri: lesson?.lessions[0]?.url}} />
+        <Video
+          onError={console.log}
+          source={{uri: params.lession?.lessions[0]?.url}}
+        />
       </View>
 
       <View style={styles.main}>
         <Text style={styles.status}>Пройдено</Text>
-        <Text style={styles.header}>{lesson.title}</Text>
-        <Text style={styles.description}>{lesson.description}</Text>
+        <Text style={styles.header}>{params.lession.title}</Text>
+        <Text style={styles.description}>{params.lession.description}</Text>
         <Button style={{}} variant="primary">
           К следующему уроку
         </Button>

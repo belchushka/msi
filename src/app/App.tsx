@@ -1,4 +1,4 @@
-import { useTheme } from '@/shared/theme';
+import {useTheme} from '@/shared/theme';
 import React from 'react';
 import {
   ActivityIndicator,
@@ -8,12 +8,11 @@ import {
   StyleSheet,
 } from 'react-native';
 import withProviders from './providers';
-import { Router } from './routes';
-import { useInit } from './useInit';
-import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import {Router} from './routes';
+import {useInit} from './useInit';
+import {GestureHandlerRootView} from 'react-native-gesture-handler';
 
-LogBox.ignoreAllLogs()
-
+LogBox.ignoreAllLogs();
 
 function App() {
   const loading = useInit();
@@ -25,7 +24,7 @@ function App() {
     );
   }
   return (
-    <GestureHandlerRootView style={{ flex: 1 }}>
+    <GestureHandlerRootView style={{flex: 1}}>
       <SafeAreaView style={styles.mainContainer}>
         <StatusBar
           barStyle="light-content"
@@ -35,7 +34,6 @@ function App() {
         <Router />
       </SafeAreaView>
     </GestureHandlerRootView>
-
   );
 }
 

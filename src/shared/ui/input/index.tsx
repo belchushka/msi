@@ -13,7 +13,7 @@ export const Input: React.FC<IInput> = ({style, error, ...props}) => {
       style={[
         style,
         styles.input,
-        error && {borderBottomColor: theme.colors.red['800']},
+        error && {borderBottomColor: theme.colors.red[800]},
       ]}
     />
   );
