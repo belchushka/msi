@@ -2,7 +2,7 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   top: {
-    flex: 1,
+    paddingVertical: 25,
   },
 
   header: {
@@ -10,7 +10,6 @@ export default StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     alignSelf: 'center',
-    paddingLeft: 25,
   },
 
   main: {
