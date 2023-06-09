@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {View, Text, Image, Linking} from 'react-native';
+import {View, Text, Image, Linking, Vibration} from 'react-native';
 import YaMap, {Marker} from 'react-native-yamap';
 import SchoolIcon from '@assets/images/school_icon.png';
 import BottomSheet from '@gorhom/bottom-sheet';
@@ -11,14 +11,13 @@ import {Button} from '@/shared/ui';
 export const MapPage = () => {
   const [schools, setSchools] = useState([]);
   const [selectedSchoolId, setSelectedSchoolId] = useState<any>(null);
+  const ignoreNext = useRef(false);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const theme = useTheme();
 
-  // variables
   const snapPoints = useMemo(() => ['1%', '30%', '60%'], []);
 
-  // callbacks
   const handleSheetChanges = useCallback((index: number) => {
     console.log('handleSheetChanges', index);
   }, []);
@@ -49,7 +48,6 @@ export const MapPage = () => {
     return null;
   }, [schools, selectedSchoolId]);
 
-  console.log(schools);
   return (
     <View style={{flex: 1}}>
       <YaMap
@@ -71,8 +69,15 @@ export const MapPage = () => {
             <Marker
               point={{lat: coords[0], lon: coords[1]}}
               onPress={() => {
-                setSelectedSchoolId(i);
-                bottomSheetRef.current.expand();
+                if (!ignoreNext.current) {
+                  ignoreNext.current = true;
+                  setSelectedSchoolId(i);
+                  Vibration.vibrate(80);
+                  bottomSheetRef.current.expand();
+                  setTimeout(() => {
+                    ignoreNext.current = false;
+                  }, 1000);
+                }
               }}>
               <Image source={SchoolIcon} style={{width: 40, height: 40}} />
             </Marker>

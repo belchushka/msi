@@ -8,26 +8,25 @@ import {
   Image,
   Modal,
   ActivityIndicator,
+  Vibration,
+  TouchableOpacity,
 } from 'react-native';
 import styles from './styles';
 import {useTheme} from '@/shared/theme';
-import DotsIcon from '@assets/icons/Dots';
 import ExpandIcon from '@assets/icons/Expand';
 import {CourseCard} from '@/entities/course';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTES} from '@/shared/router';
-import SelectDropdown from 'react-native-select-dropdown';
 import {$host} from '@/shared/api';
 import {useStore} from 'effector-react';
 import {$authStore} from '@/entities/auth';
 import Heart from '@assets/images/heart_icon.png';
 import Diamond from '@assets/images/diamond_icon.png';
 import Mascot from '@assets/images/mascot_not_found.png';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 export const HomePage = () => {
   const {user} = useStore($authStore);
-  const [selectedCategory, setSelectedCategory] = useState<any>('Гитара');
+  const [selectedCategory, setSelectedCategory] = useState<any>(null);
   const [showModal, setShowModal] = useState(false);
   const [loading, setLoading] = useState(false);
 
@@ -66,7 +65,7 @@ export const HomePage = () => {
 
   useEffect(() => {
     getCourses();
-  }, [selectedCategory]);
+  }, [selectedCategory, categories]);
 
   return (
     <View style={{backgroundColor: '#F9FAFB', flex: 1}}>
@@ -86,18 +85,21 @@ export const HomePage = () => {
           }}>
           {categories.map(category => {
             return (
-              <Text
-                style={{
-                  color: '#404041',
-                  fontSize: 30,
-                  fontFamily: "DeeDee"
-                }}
+              <TouchableOpacity
                 onPress={() => {
+                  Vibration.vibrate(80);
                   setSelectedCategory(category);
                   setShowModal(false);
                 }}>
-                {category}
-              </Text>
+                <Text
+                  style={{
+                    color: '#404041',
+                    fontFamily: 'DeeDee',
+                    fontSize: 30,
+                  }}>
+                  {category}
+                </Text>
+              </TouchableOpacity>
             );
           })}
         </ScrollView>
@@ -116,7 +118,10 @@ export const HomePage = () => {
             alignItems: 'center',
           }}>
           <TouchableOpacity
-            onPress={() => setShowModal(true)}
+            onPress={() => {
+              Vibration.vibrate(80);
+              setShowModal(true);
+            }}
             activeOpacity={0.8}
             style={{
               flexDirection: 'row',
