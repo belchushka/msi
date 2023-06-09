@@ -8,6 +8,9 @@ import {SigninForm} from '@/features/auth';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTES} from '@/shared/router';
 
+import VK from "@assets/images/vk.png"
+import Yandex from "@assets/images/yandex.png"
+
 export const SigninPage = () => {
   const theme = useTheme();
   const navigation = useNavigation();
@@ -48,8 +51,12 @@ export const SigninPage = () => {
               Или войдите с помощью
             </Text>
             <View style={styles.authMethodButtons}>
-              <View style={styles.authMethodButtons_button} />
-              <View style={styles.authMethodButtons_button} />
+              <View style={styles.authMethodButtons_button}>
+                <Image source={VK}></Image>
+              </View>
+              <View style={styles.authMethodButtons_button}>
+                <Image source={Yandex}></Image>
+              </View>
             </View>
           </View>
         </Container>

@@ -52,6 +52,8 @@ export default StyleSheet.create({
   authMethodButtons_button: {
     flex: 1,
     height: 60,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 8,
   },

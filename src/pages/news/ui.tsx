@@ -142,6 +142,12 @@ export const NewsPage = () => {
   const theme = useTheme();
   const navigation = useNavigation();
 
+  const [selectedOption, setSelectedOption] = useState('main');
+
+  const handleOptionPress = option => {
+    setSelectedOption(option);
+  };
+
   const fetch = async () => {
     const {data} = await $host.get('/feed/allposts');
     setNews(data.data);
@@ -183,6 +189,66 @@ export const NewsPage = () => {
           </TouchableOpacity>
         </Container>
       </View>
+
+      <View
+          style={[
+            styles.swiper,
+            {flexDirection: 'row', justifyContent: 'space-between'},
+          ]}>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => handleOptionPress('main')}
+            style={[
+              styles.options_background,
+              selectedOption === 'main' ? styles.selected_background : null,
+            ]}>
+            <Text
+              style={[ {
+                fontFamily: 'DeeDee-Bold',},
+                styles.option_text,
+                selectedOption === 'main'
+                  ? styles.selected_option_text
+                  : styles.deselected_option_text,
+              ]}>
+              Для вас
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => handleOptionPress('events')}
+            style={[
+              styles.options_background,
+              selectedOption === 'events' ? styles.selected_background : null,
+            ]}>
+            <Text
+              style={[
+                styles.option_text,
+                selectedOption === 'events'
+                  ? styles.selected_option_text
+                  : styles.deselected_option_text,
+              ]}>
+              Мероприятия
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => handleOptionPress('grants')}
+            style={[
+              styles.options_background,
+              selectedOption === 'grants' ? styles.selected_background : null,
+            ]}>
+            <Text
+              style={[
+                styles.option_text,
+                selectedOption === 'grants'
+                  ? styles.selected_option_text
+                  : styles.deselected_option_text,
+              ]}>
+              Гранты
+            </Text>
+          </TouchableOpacity>
+        </View>
 
       <ScrollView
         contentContainerStyle={{

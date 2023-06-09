@@ -5,6 +5,40 @@ export default StyleSheet.create({
     paddingVertical: 20,
     backgroundColor: 'white',
   },
+
+  swiper: {
+    flex: 0.1,
+    backgroundColor: 'white',
+    elevation: 10,
+    shadowColor: '#00000033'
+  },
+
+  options_background: {
+    flex: 1, 
+    alignItems: 'center', 
+    justifyContent: 'center'
+  },
+
+  selected_background: {
+      borderBottomColor: '#A4CE57',
+      borderBottomWidth: 3,
+  },
+
+  option_text: {
+    fontFamily: 'DeeDee',
+    fontSize: 20
+  },
+
+  selected_option_text: {
+      fontFamily: 'DeeDee',
+      color: '#A4CE57',
+  },
+
+  deselected_option_text: {
+      fontFamily: 'DeeDee',
+      color: 'black',
+  },
+
   header_text: {
     fontSize: 24,
     color: 'black',

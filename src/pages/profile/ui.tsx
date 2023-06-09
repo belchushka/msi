@@ -17,6 +17,8 @@ import DocumentPicker, {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {$authHost} from '@/shared/api';
 import {View} from 'react-native';
+import Ach1 from "@assets/images/Ach1.png"
+import Ach2 from "@assets/images/Ach2.png"
 
 export const ProfilePage = () => {
   const {user} = useStore($authStore);
@@ -120,7 +122,7 @@ export const ProfilePage = () => {
               />
             </View>
             <Text style={styles.name}>{user.firstname}</Text>
-            <Text style={{fontSize: 18, color: 'black', marginBottom: 20}} />
+            <Text style={{fontSize: 18, color: 'black', marginTop: 12, marginBottom: 12, fontFamily: 'DeeDee'}}>Уровень 1</Text>
 
             <Progress.Bar
               width={400}
@@ -132,120 +134,55 @@ export const ProfilePage = () => {
               unfilledColor={theme.colors.dark['100']}
             />
           </View>
-          <View style={styles.achievements_container}>
-            <Text style={{fontSize: 18, color: 'black', fontWeight: '500'}}>
+          <View style={{height: 180, justifyContent: 'center'}}>
+            <Text style={{fontSize: 18, color: 'black', fontFamily: 'DeeDee-Bold'}}>
               Достижения
             </Text>
             <Container
               style={{
                 flex: 1,
                 backgroundColor: 'white',
-                marginVertical: 32,
+                marginBottom: 32,
+                marginTop: 12,
                 elevation: 5,
                 shadowColor: '#0000001A',
                 borderRadius: 8,
               }}>
-              <Text style={{color: 'black', marginVertical: 20, fontSize: 20}}>
-                Первый курс!
-              </Text>
-              <Text style={{color: '#B2B2B2', fontSize: 20}}>
-                Вы записались на свой первый курс. Так держать!
-              </Text>
-              <Text style={{color: '#A5D324', fontSize: 20, marginTop: 10}}>
-                +100 очков
-              </Text>
+                
+              <View style={{flexDirection: 'row', gap: 20}}>
+                <Image style={{height: 80, width: 80, marginTop: 20}} source={Ach1}></Image>  
+                <View>
+                    <Text style={{color: 'black', marginTop: 20, fontFamily: 'DeeDee-Bold', fontSize: 20}}>
+                    1 курс!
+                    </Text>
+                    <Text style={{color: '#B2B2B2', fontSize: 18, marginTop: 4, fontFamily: 'DeeDeeLight', width: '70%'}}>
+                        Вы записались на свой первый курс. Так держать!
+                    </Text>
+                </View>
+              </View>  
+              
+              
             </Container>
+
+          
           </View>
           <View style={styles.skills_container}>
-            <Text style={{fontSize: 18, color: 'black', fontWeight: '500'}}>
+            <Text style={{fontSize: 18, color: 'black', fontFamily: 'DeeDee-Bold'}}>
               Навыки
             </Text>
             <Container
               style={{
                 flex: 1,
                 backgroundColor: 'white',
-                marginVertical: 32,
+                marginBottom: 32,
+                marginTop: 12,
                 elevation: 5,
                 shadowColor: '#0000001A',
                 borderRadius: 8,
               }}>
               <View style={{flexDirection: 'row', gap: 20}}>
-                <View>
-                  <View style={{flexDirection: 'row', gap: 20}}>
-                    <Text style={{fontSize: 18, color: 'black', marginTop: 16}}>
-                      Пианино
-                    </Text>
-                    <Text
-                      style={{fontSize: 18, color: '#A5D324', marginTop: 16}}>
-                      0 / 100
-                    </Text>
-                  </View>
-                  <View style={{flexDirection: 'row', gap: 20}}>
-                    <Text style={{fontSize: 18, color: 'black', marginTop: 16}}>
-                      Гитара
-                    </Text>
-                    <Text
-                      style={{fontSize: 18, color: '#A5D324', marginTop: 16}}>
-                      0 / 100
-                    </Text>
-                  </View>
-                  <View style={{flexDirection: 'row', gap: 20}}>
-                    <Text style={{fontSize: 18, color: 'black', marginTop: 16}}>
-                      ИЗО
-                    </Text>
-                    <Text
-                      style={{fontSize: 18, color: '#A5D324', marginTop: 16}}>
-                      0 / 100
-                    </Text>
-                  </View>
-                  <View style={{flexDirection: 'row', gap: 20}}>
-                    <Text style={{fontSize: 18, color: 'black', marginTop: 16}}>
-                      Театр
-                    </Text>
-                    <Text
-                      style={{fontSize: 18, color: '#A5D324', marginTop: 16}}>
-                      0 / 100
-                    </Text>
-                  </View>
-                </View>
-                <View>
-                  <View style={{flexDirection: 'row', gap: 20}}>
-                    <Text style={{fontSize: 18, color: 'black', marginTop: 16}}>
-                      Ударные
-                    </Text>
-                    <Text
-                      style={{fontSize: 18, color: '#A5D324', marginTop: 16}}>
-                      0 / 100
-                    </Text>
-                  </View>
-                  <View style={{flexDirection: 'row', gap: 20}}>
-                    <Text style={{fontSize: 18, color: 'black', marginTop: 16}}>
-                      Живопись
-                    </Text>
-                    <Text
-                      style={{fontSize: 18, color: '#A5D324', marginTop: 16}}>
-                      0 / 100
-                    </Text>
-                  </View>
-                  <View style={{flexDirection: 'row', gap: 20}}>
-                    <Text style={{fontSize: 18, color: 'black', marginTop: 16}}>
-                      Хор
-                    </Text>
-                    <Text
-                      style={{fontSize: 18, color: '#A5D324', marginTop: 16}}>
-                      0 / 100
-                    </Text>
-                  </View>
-                  <View style={{flexDirection: 'row', gap: 20}}>
-                    <Text style={{fontSize: 18, color: 'black', marginTop: 16}}>
-                      Дизайн
-                    </Text>
-                    <Text
-                      style={{fontSize: 18, color: '#A5D324', marginTop: 16}}>
-                      0 / 100
-                    </Text>
-                  </View>
-                </View>
+                
+                
               </View>
             </Container>
           </View>

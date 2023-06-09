@@ -4,6 +4,7 @@ import {useEvent, useGate, useStore} from 'effector-react';
 import React from 'react';
 import {Text, View} from 'react-native';
 import {userTypes} from '../lib';
+
 import {
   $currentStep,
   $quizzesCategories,
@@ -14,6 +15,7 @@ import {
   submit,
 } from '../model';
 import styles from './styles';
+import BouncyCheckbox from 'react-native-bouncy-checkbox';
 
 const stepTitles = [
   'Давайте знакомиться!',
@@ -59,6 +61,19 @@ const FirstStep = () => {
         placeholder="Повторите пароль *"
         error={hasError('repeatPassword')}
       />
+      <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
+        <BouncyCheckbox
+          size={25}
+          fillColor="#A5D324"
+          unfillColor="white"
+          iconStyle={{ borderColor: "white" }}
+          innerIconStyle={{ borderWidth: 0 }}
+          onPress={(isChecked: boolean) => {}}
+        />
+        <Text style={{fontFamily: "DeeDee", fontSize: 20, color: 'white'}}>
+          Согласие на обработку персональных данных
+        </Text>
+      </View>
     </View>
   );
 };
