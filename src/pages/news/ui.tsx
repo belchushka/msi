@@ -1,7 +1,7 @@
-import {SafeView} from '@/shared/ui/safeView';
 import React, {useEffect, useState} from 'react';
 import {useNavigation} from '@react-navigation/native';
 import {$authHost, $host} from '@/shared/api';
+import DefaultPicture from '@assets/images/default_userpicture.png';
 import {
   ActivityIndicator,
   Image,
@@ -16,41 +16,41 @@ import {ROUTES} from '@/shared/router';
 import {RefreshControl} from 'react-native-gesture-handler';
 import {useTheme} from '@/shared/theme';
 import IconPlus from '@assets/icons/Plus';
-import Like from "@assets/images/heart.png"
-import LikeFilled from "@assets/images/heart_filled.png"
-import Share from "@assets/images/share.png"
+import Like from '@assets/images/heart.png';
+import LikeFilled from '@assets/images/heart_filled.png';
+import Share from '@assets/images/share.png';
 
 interface INewsCard {
   newsElement: any;
 }
 
 const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
-
   const [opened, setOpened] = useState(false);
   const [liked, setLiked] = useState(false);
 
-
   const onLike = async (liked: boolean) => {
-    console.log(liked)
     try {
-      const resp = await $authHost.put("feed/updatelike", {
+      const resp = await $authHost.put('feed/updatelike', {
         postid: parseInt(newsElement.id),
-        isLike: liked ? "true" : "false"
-      })
+        isLike: liked ? 'true' : 'false',
+      });
     } catch (e) {
-      console.log(e.response.data)
-    }    
-  }
-
+      console.log(e.response.data);
+    }
+  };
 
   return (
     <View style={styles.news_container}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Image
           style={{width: 50, height: 50, borderRadius: 50}}
-          source={{
-            uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Mnx8cGVyc29ufGVufDB8fDB8fHww&w=1000&q=80',
-          }}
+          source={
+            newsElement?.user?.photo
+              ? {
+                  uri: newsElement.user.photo,
+                }
+              : DefaultPicture
+          }
         />
         <View style={{marginLeft: 16, gap: 2}}>
           <Text
@@ -62,9 +62,9 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
             {newsElement.authorname}
           </Text>
           <Text style={{color: '#A7A9AB', fontFamily: 'DeeDee', fontSize: 14}}>
-          {new Intl.DateTimeFormat('ru-RU').format(
-            new Date(newsElement.createdAt),
-          )}
+            {new Intl.DateTimeFormat('ru-RU').format(
+              new Date(newsElement.createdAt),
+            )}
           </Text>
         </View>
       </View>
@@ -75,12 +75,14 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
             : newsElement.text
           : newsElement.text}
       </Text>
-      {newsElement.text.length > 100 && <TouchableOpacity onPress={() => setOpened(state => !state)}>
-        <Text style={{color: '#A4CE57', fontSize: 16}}>
-          {!opened ? 'Читать далее' : 'Свернуть'}
-        </Text>
-      </TouchableOpacity>}
-      
+      {newsElement.text.length > 100 && (
+        <TouchableOpacity onPress={() => setOpened(state => !state)}>
+          <Text style={{color: '#A4CE57', fontSize: 16}}>
+            {!opened ? 'Читать далее' : 'Свернуть'}
+          </Text>
+        </TouchableOpacity>
+      )}
+
       {newsElement.image == null || newsElement.image.length < 10 ? null : (
         <Image
           style={{width: '100%', aspectRatio: '16/9', borderRadius: 5}}
@@ -89,22 +91,46 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
       )}
 
       <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
-        <TouchableOpacity hitSlop={30} onPress={() => {
-          setLiked((state) => !state);
-          onLike(!liked);
-        }} style={{height: 32, width: 64, borderRadius: 10, backgroundColor: "#F2F4F6", flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4}}>
-          <Image source={liked ? LikeFilled : Like} style={{height: 20, width: 20}}></Image>
-          <Text style={{fontFamily: 'DeeDee', fontSize: 16, color: '#404041'}}>{newsElement.likes}</Text>
+        <TouchableOpacity
+          hitSlop={30}
+          onPress={() => {
+            setLiked(state => !state);
+            onLike(!liked);
+          }}
+          style={{
+            height: 32,
+            width: 64,
+            borderRadius: 10,
+            backgroundColor: '#F2F4F6',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 4,
+          }}>
+          <Image
+            source={liked ? LikeFilled : Like}
+            style={{height: 20, width: 20}}
+          />
+          <Text style={{fontFamily: 'DeeDee', fontSize: 16, color: '#404041'}}>
+            {newsElement.likes}
+          </Text>
         </TouchableOpacity>
 
-        <TouchableOpacity onPress={() => {
-          
-        }} style={{height: 32, width: 64, borderRadius: 10, backgroundColor: "#F2F4F6", flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 4}}>
-          <Image source={Share} style={{height: 20, width: 20}}></Image>
-
+        <TouchableOpacity
+          onPress={() => {}}
+          style={{
+            height: 32,
+            width: 64,
+            borderRadius: 10,
+            backgroundColor: '#F2F4F6',
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 4,
+          }}>
+          <Image source={Share} style={{height: 20, width: 20}} />
         </TouchableOpacity>
       </View>
-
     </View>
   );
 };
@@ -136,7 +162,7 @@ export const NewsPage = () => {
   }, []);
 
   return (
-    <View style={{flex: 1, backgroundColor: "#F2F4F6"}}>
+    <View style={{flex: 1, backgroundColor: '#F2F4F6'}}>
       <View style={styles.header}>
         <Container
           style={{
