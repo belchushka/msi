@@ -42,11 +42,18 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
 
   return (
     <View style={styles.news_container}>
+      <View style={{flexDirection: 'row', gap: 4}}>
       {
-        <Text style={{fontFamily: 'DeeDee', fontSize: 20, color: 'black'}}>
-          {newsElement.badge[0]}
-        </Text>
+        newsElement.badge.map((badge, i) => {
+          return <View style={{borderColor: "#A4CE57", borderWidth: 2, borderRadius: 16, marginBottom: 4}}>
+          <Text style={{fontFamily: 'DeeDee', fontSize: 20, color: '#A4CE57', paddingVertical: 3, paddingHorizontal: 12}}>
+            {badge}
+          </Text>
+        </View>
+        })
       }
+      </View>
+      
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Image
           style={{width: 50, height: 50, borderRadius: 50}}

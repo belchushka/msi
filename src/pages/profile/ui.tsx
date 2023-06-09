@@ -25,8 +25,8 @@ import DocumentPicker, {
 } from 'react-native-document-picker';
 import {$authHost, $host} from '@/shared/api';
 import {View} from 'react-native';
-import Ach1 from '@assets/images/Ach1.png';
-import Ach2 from '@assets/images/Ach2.png';
+import Ach1 from '@assets/images/achievement1.png';
+import Ach2 from '@assets/images/rating.png';
 
 export const ProfilePage = () => {
   const {user} = useStore($authStore);
@@ -222,7 +222,7 @@ export const ProfilePage = () => {
             style={{
               flexDirection: 'row',
               justifyContent: 'space-between',
-              marginBottom: 20,
+              marginBottom: 0,
               paddingVertical: 12,
               borderTopWidth: 1,
               borderBottomWidth: 1,
@@ -246,7 +246,13 @@ export const ProfilePage = () => {
               {user?.categories.data?.[0]?.label}
             </Text>
           </TouchableOpacity>
+        
+          <Image source={Ach1} style={{width: '100%', height: 300, resizeMode: 'contain',}}></Image>
+          <Image source={Ach2} style={{width: '100%', height: 200, resizeMode: 'contain', marginTop: 12}}></Image>
+          
+        
         </Container>
+        
       </ScrollView>
     </View>
   );
