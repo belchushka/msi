@@ -33,12 +33,12 @@ export const LessonPage = ({route}) => {
         <Text style={styles.header}>{params.lession.title}</Text>
         <Text style={styles.description}>{params.lession.description}</Text>
         <Button onPress={() => {
-
+          
         }} style={{justifyContent: 'flex-end', marginTop: 24}} variant='outline_green'>
           Скачать материалы
         </Button>
         <Button onPress={() => {
-
+          navigation.goBack();
         }} style={{justifyContent: 'flex-end', marginTop: 12}} variant="primary">
           К списку уроков
         </Button>
