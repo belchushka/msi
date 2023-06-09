@@ -7,7 +7,8 @@ export default StyleSheet.create({
   },
 
   swiper: {
-    flex: 0.1,
+    flex: 1,
+    height: 70,
     backgroundColor: 'white',
     elevation: 10,
     shadowColor: '#00000033'

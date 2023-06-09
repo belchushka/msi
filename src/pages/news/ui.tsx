@@ -11,7 +11,7 @@ import {
   View,
 } from 'react-native';
 import styles from './styles';
-import {Container} from '@/shared/ui';
+import {Button, Container} from '@/shared/ui';
 import {ROUTES} from '@/shared/router';
 import {RefreshControl} from 'react-native-gesture-handler';
 import {useTheme} from '@/shared/theme';
@@ -41,6 +41,11 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
 
   return (
     <View style={styles.news_container}>
+      {
+        <Text style={{fontFamily: 'DeeDee', fontSize: 20, color: 'black'}}>
+          {newsElement.badge[0]}
+        </Text>
+      }
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
         <Image
           style={{width: 50, height: 50, borderRadius: 50}}
@@ -135,6 +140,94 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
   );
 };
 
+const EventCard: React.FC<INewsCard> = ({newsElement}) => {
+
+  return (
+    <View style={styles.news_container}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Image
+          style={{width: 50, height: 50, borderRadius: 50}}
+          source={
+            newsElement?.user?.photo
+              ? {
+                  uri: newsElement.user.photo,
+                }
+              : DefaultPicture
+          }
+        />
+        <View style={{marginLeft: 16, gap: 2}}>
+          <Text
+            style={{
+              fontFamily: 'DeeDee',
+              color: 'black',
+              fontSize: 20,
+            }}>
+            {newsElement.authorname}
+          </Text>
+          <Text style={{color: '#A7A9AB', fontFamily: 'DeeDee', fontSize: 14}}>
+            {new Intl.DateTimeFormat('ru-RU').format(
+              new Date(newsElement.createdAt),
+            )}
+          </Text>
+        </View>
+      </View>
+      <Text style={styles.news_text}>
+        {newsElement.text}
+      </Text>
+      <Text style={[styles.news_text, {color: "#A4CE57"}]}>Адрес</Text>
+      <Text style={[styles.news_text, {color: "#000000"}]}>{newsElement.address}</Text>
+      <Text style={[styles.news_text, {color: "#A4CE57"}]}>Дата и время</Text>
+      <Text style={[styles.news_text, {color: "#000000"}]}> {new Intl.DateTimeFormat('ru-RU').format(
+              new Date(newsElement.date),
+            )}</Text>
+      <Button variant='primary' style={{alignSelf: 'stretch', marginTop: 12}}>Записаться</Button>
+    
+    </View>
+  );
+};
+
+const GrantCard: React.FC<INewsCard> = ({newsElement}) => {
+
+  return (
+    <View style={styles.news_container}>
+      <View style={{flexDirection: 'row', alignItems: 'center'}}>
+        <Image
+          style={{width: 50, height: 50, borderRadius: 50}}
+          source={
+            newsElement?.user?.photo
+              ? {
+                  uri: newsElement.user.photo,
+                }
+              : DefaultPicture
+          }
+        />
+        <View style={{marginLeft: 16, gap: 2}}>
+          <Text
+            style={{
+              fontFamily: 'DeeDee',
+              color: 'black',
+              fontSize: 20,
+            }}>
+            {newsElement.authorname}
+          </Text>
+          <Text style={{color: '#A7A9AB', fontFamily: 'DeeDee', fontSize: 14}}>
+            {new Intl.DateTimeFormat('ru-RU').format(
+              new Date(newsElement.createdAt),
+            )}
+          </Text>
+        </View>
+      </View>
+      <Text style={styles.news_text}>
+        {newsElement.text}
+      </Text>
+      <Text style={[styles.news_text, {color: "#A4CE57"}]}>Грант</Text>
+      <Text style={[styles.news_text, {color: "#000000"}]}>{newsElement.money}</Text>
+      <Button variant='primary' style={{alignSelf: 'stretch', marginTop: 12}}>Подать заявку</Button>
+    
+    </View>
+  );
+};
+
 export const NewsPage = () => {
   const [news, setNews] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -190,7 +283,37 @@ export const NewsPage = () => {
         </Container>
       </View>
 
-      <View
+      
+
+      <ScrollView
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingVertical: 6,
+          position: 'relative',
+        }}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }>
+        {loading ? (
+          <View
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}>
+            <ActivityIndicator
+              size="large"
+              color={theme.colors.green.primary}
+            />
+          </View>
+        ) : (
+          <View
+            style={{
+              gap: 6,
+            }}>
+              <View
           style={[
             styles.swiper,
             {flexDirection: 'row', justifyContent: 'space-between'},
@@ -249,37 +372,12 @@ export const NewsPage = () => {
             </Text>
           </TouchableOpacity>
         </View>
-
-      <ScrollView
-        contentContainerStyle={{
-          flexGrow: 1,
-          paddingVertical: 6,
-          position: 'relative',
-        }}
-        refreshControl={
-          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        }>
-        {loading ? (
-          <View
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-            <ActivityIndicator
-              size="large"
-              color={theme.colors.green.primary}
-            />
-          </View>
-        ) : (
-          <View
-            style={{
-              gap: 6,
-            }}>
-            {news.map((newsElement, i) => {
-              return <NewsCard key={i} newsElement={newsElement} />;
+        {selectedOption == "main" ? news.map((newsElement, i) => {
+              return newsElement.type == "POST" ? <NewsCard key={i} newsElement={newsElement} /> : null;
+            }) : selectedOption == "events" ? news.map((newsElement, i) => {
+              return newsElement.type == "EVENT" ? <EventCard key={i} newsElement={newsElement} /> : null;
+            }) : news.map((newsElement, i) => {
+              return newsElement.type == "ADVERTISEMENT" ? <GrantCard key={i} newsElement={newsElement} /> : null;
             })}
           </View>
         )}
