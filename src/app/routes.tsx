@@ -31,6 +31,7 @@ import {LessonPage} from '@/pages/lessonPage';
 import {NewsPage} from '@/pages/news';
 import {ProfilePage} from '@/pages/profile';
 import {AddNewsPage} from '@/pages/addNews';
+import {OnboardingSliderPage} from '@/pages/onboardingSlider';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -148,9 +149,13 @@ export const Router = () => {
   useEffect(() => {
     (async () => {
       if (navigation) {
+        const onboardingSliderPassed =
+          (await AsyncStorage.getItem('onboardingSliderPassed')) === 'true';
+        if (!onboardingSliderPassed) {
+          navigation.navigate(ROUTES.ONBOARDING_SLIDER);
+        }
         const onboardingPassed =
           (await AsyncStorage.getItem('onboardingPassed')) === 'true';
-        console.log(onboardingPassed);
         if (!onboardingPassed) {
           navigation.navigate(ROUTES.ONBOARDIBG);
         }
@@ -169,6 +174,10 @@ export const Router = () => {
           <Stack.Screen name={ROUTES.INITIAL} component={InitPage} />
           <Stack.Screen name={ROUTES.SIGNIN} component={SigninPage} />
           <Stack.Screen name={ROUTES.SIGNUP} component={SignupPage} />
+          <Stack.Screen
+            name={ROUTES.ONBOARDING_SLIDER}
+            component={OnboardingSliderPage}
+          />
         </>
       ) : (
         <>

@@ -13,7 +13,8 @@ export enum ROUTES {
   LESSON_SCREEN = 'lesson_screen',
   NEWS_SCREEN = 'news_screen',
   PROFILE_PAGE = 'profile_page',
-  CREATE_NEWS = 'create_news'
+  CREATE_NEWS = 'create_news',
+  ONBOARDING_SLIDER = 'onboarding_slider',
 }
 
 const navigationRef = createNavigationContainerRef();

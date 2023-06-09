@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   StatusBar,
   StyleSheet,
+  View,
 } from 'react-native';
 import withProviders from './providers';
 import {Router} from './routes';
@@ -20,7 +21,15 @@ function App() {
 
   if (loading) {
     return (
-      <ActivityIndicator size="large" color={theme.colors.green.primary} />
+      <View
+        style={{
+          backgroundColor: 'white',
+          flex: 1,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <ActivityIndicator size="large" color={theme.colors.green.primary} />
+      </View>
     );
   }
   return (
