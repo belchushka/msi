@@ -42,24 +42,18 @@ export const AddNewsPage = () => {
           <Text style={styles.header_text}>Новая новость</Text>
         </Container>
       </View>
-      <Container style={{flex: 1}}>
-        <TextInput
-          placeholderTextColor={'black'}
-          value={title}
-          onChangeText={setTitle}
-          style={[styles.input_text_container, {marginTop: 20}]}
-          placeholder="Название"
-        />
+      <Container style={{flex: 1, backgroundColor: "#F2F4F6"}}>
+        
         <TextInput
           placeholderTextColor={'black'}
           multiline={true}
           numberOfLines={10}
           value={text}
-          placeholder="Описание"
+          placeholder="Введите текст"
           onChangeText={setText}
           style={[
             styles.input_text_container,
-            {textAlignVertical: 'top', marginTop: 20},
+            {textAlignVertical: 'top', marginTop: 20, fontFamily: "DeeDee"},
           ]}
         />
         <View

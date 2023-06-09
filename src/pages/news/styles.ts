@@ -6,9 +6,9 @@ export default StyleSheet.create({
     backgroundColor: 'white',
   },
   header_text: {
-    fontSize: 32,
+    fontSize: 24,
     color: 'black',
-    fontWeight: 'bold',
+    fontFamily: 'DeeDee-Bold'
   },
 
   news_container: {
@@ -27,6 +27,7 @@ export default StyleSheet.create({
   news_text: {
     color: 'black',
     fontSize: 18,
-    marginTop: 10,
+    fontFamily: 'DeeDee',
+    marginTop: 6,
   },
 });

@@ -88,9 +88,9 @@ export const HomePage = () => {
             return (
               <Text
                 style={{
-                  color: 'black',
+                  color: '#404041',
                   fontSize: 30,
-                  fontWeight: '600',
+                  fontFamily: "DeeDee"
                 }}
                 onPress={() => {
                   setSelectedCategory(category);
@@ -165,7 +165,7 @@ export const HomePage = () => {
           </View>
         </Container>
       </View>
-      <View style={styles.main}>
+      <Container style={styles.main}>
         <ScrollView
           contentContainerStyle={{
             flexGrow: 1,
@@ -231,10 +231,11 @@ export const HomePage = () => {
               return (
                 <View
                   style={{
+                    marginTop: 16,
                     width:
                       i % 5 === 0
                         ? '100%'
-                        : (Dimensions.get('window').width - 20) / 2,
+                        : (Dimensions.get('window').width - 80) / 2,
                     alignItems: 'center',
                   }}>
                   <CourseCard
@@ -254,7 +255,7 @@ export const HomePage = () => {
               );
             })}
         </ScrollView>
-      </View>
+      </Container>
     </View>
   );
 };

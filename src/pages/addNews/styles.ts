@@ -6,9 +6,9 @@ export default StyleSheet.create({
     backgroundColor: 'white',
   },
   header_text: {
-    fontSize: 32,
+    fontSize: 24,
     color: 'black',
-    fontWeight: 'bold',
+    fontFamily: 'DeeDee-Bold'
   },
   input_text_container: {
     paddingVertical: 15,

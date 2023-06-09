@@ -1,10 +1,12 @@
-import {AuthApi, setIsAuth} from '@/entities/auth';
+import {AuthApi, setAuthUser, setIsAuth} from '@/entities/auth';
 import {validators} from '@/shared/forms';
 import {navigateFx, ROUTES} from '@/shared/router';
 import {attach, sample} from 'effector';
 import {createForm} from 'effector-forms';
 
 const loginFx = attach({effect: AuthApi.loginFx});
+const getMeFx = attach({effect: AuthApi.getMeFx});
+
 
 const form = createForm({
   fields: {
@@ -28,8 +30,13 @@ sample({
   clock: loginFx.doneData,
   target: [
     setIsAuth.prepend(() => true),
-    navigateFx.prepend(() => ROUTES.HOME),
+    getMeFx
   ],
 });
+
+sample({
+  source: getMeFx.doneData,
+  target: navigateFx.prepend(()=>ROUTES.HOME)
+})
 
 export {form};

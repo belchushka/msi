@@ -1,27 +1,70 @@
-import { Container, GradientBackground } from '@/shared/ui';
-import {SafeView} from '@/shared/ui/safeView';
-import React, { useEffect, useState } from 'react';
-import {View, Text, ScrollView, Dimensions, Image} from 'react-native';
-import { useStore } from 'effector-react';
-import { $authStore } from '@/entities/auth';
+import { Container } from '@/shared/ui';
+import React, { useCallback, useState } from 'react';
+import {View, Text, Image} from 'react-native';
+import { useStore, useEvent } from 'effector-react';
+import { $authStore, logoutFx } from '@/entities/auth';
 import DefaultPicture from '@assets/images/default_userpicture.png';
+import Exit from '@assets/icons/Exit';
+import Edit from '@assets/icons/Edit';
 import styles from './styles';
+import * as Progress from 'react-native-progress';
+import { useTheme } from '@/shared/theme';
+import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from '@/shared/router';
+import DocumentPicker from 'react-native-document-picker'
+import { TouchableOpacity } from 'react-native-gesture-handler';
 
 
 export const ProfilePage = () => {
   const {user} = useStore($authStore)
-  console.log(user)
-  console.log("user")
+  const logout = useEvent(logoutFx)
+  const navigation = useNavigation()
+  const [selectedAvatar, setSelectedAvatar] = useState<null | string>(null)
 
+  const theme = useTheme();
+
+  const onLogout = async ()=>{
+    await logout()
+    navigation.navigate(ROUTES.INITIAL)
+  }
+
+  const handleDocumentSelection = useCallback(async () => {
+    try {
+      const response = await DocumentPicker.pick({
+        presentationStyle: 'fullScreen',
+      });
+      if(response[0]){
+        setSelectedAvatar(response[0].uri)
+      }
+    } catch (err) {
+      console.warn(err);
+    }
+  }, []);
 
   return (
-    <SafeView style={{flex: 1}}>
+    <View style={{flex: 1}}>
         <View style={{backgroundColor: "#F9FAFB", flex: 1}}>
             <Container style={{flex: 1}}>
-                <View style={styles.baseinfo_container}> 
-                    <Image style={{width: 100, height: 100, borderRadius: 50, marginBottom: 24}} source={DefaultPicture}/>
-                    <Text style={styles.name}>Имя Фамилия</Text>
-                    <Text style={{fontSize: 18, color: 'black'}}>1 уровень</Text>
+            <View style={[styles.baseinfo_container, {marginTop: 32}]}> 
+            <View style={{flexDirection: 'row'}}>
+                        <Edit style={{height: 50, width: 50, alignSelf: 'center', alignContent: 'center', marginRight: 50}}></Edit>
+                        <TouchableOpacity onPress={handleDocumentSelection}>
+                            <Image style={{width: 100, height: 100, borderRadius: 50, marginBottom: 24}} source={{uri: selectedAvatar}}/>
+                        </TouchableOpacity>
+                        <Exit onPress={onLogout} style={{height: 50, width: 50, alignSelf: 'center', alignContent: 'center', marginLeft: 50}}></Exit>
+                    </View>
+                    <Text style={styles.name}>{user.firstname}</Text>
+                    <Text style={{fontSize: 18, color: 'black', marginBottom: 20}}>1 уровень</Text>
+                    
+                    <Progress.Bar
+                        width={400}
+                        borderRadius={40}
+                        borderColor="transparent"
+                        color={theme.colors.green.primary}
+                        height={20}
+                        progress={0.2}
+                        unfilledColor={theme.colors.dark['100']}
+                        />
                 </View>
                 <View style={styles.achievements_container}>
                     <Text style={{fontSize: 18, color: 'black', fontWeight: '500'}}>Достижения</Text>
@@ -76,6 +119,6 @@ export const ProfilePage = () => {
                 </View>
             </Container>
         </View>
-    </SafeView>
+    </View>
   );
 };

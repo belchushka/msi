@@ -6,7 +6,7 @@ export default StyleSheet.create({
         backgroundColor: 'black'
     },
     swiper: {
-        flex: 1,
+        flex: 0.8,
         backgroundColor: 'white',
         elevation: 10,
         shadowColor: '#00000033'
@@ -17,26 +17,37 @@ export default StyleSheet.create({
     },
     text_header: {
         fontSize: 28,
+        fontFamily: 'DeeDee-Bold',
         color: 'black',
-        marginVertical: 20
+        marginTop: 32,
+        marginBottom: 12,
     },
     text_subheader: {
         fontSize: 24,
+        fontFamily: 'DeeDee-Bold',
         color: 'black',
-        marginVertical: 20
+        marginTop: 20,
+        marginBottom: 12
     },
     text: {
         fontSize: 18,
+        lineHeight: 22,
+        fontFamily: 'DeeDeeLight',
         color: '#76787A'
     },
+
     tag_container: {
         borderColor: "#A4CE57",
         borderRadius: 8,
-        borderWidth: 3,
+        justifyContent: 'center',
+        minWidth: 92,
+        alignItems: 'center',
+        borderWidth: 2,
         padding: 8,
-        alignSelf: 'flex-start',
     },
+
     tag_text: {
+        fontFamily: 'DeeDee',
         fontSize: 16,
         color: "#A4CE57"
     },
@@ -47,14 +58,17 @@ export default StyleSheet.create({
     },
 
     option_text: {
+        fontFamily: 'DeeDee',
         fontSize: 20
     },
     
     selected_option_text: {
+        fontFamily: 'DeeDee',
         color: '#A4CE57',
     },
 
     deselected_option_text: {
+        fontFamily: 'DeeDee',
         color: 'black',
     },
 

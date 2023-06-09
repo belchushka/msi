@@ -69,7 +69,8 @@ export const CoursePage = ({route}) => {
               selectedOption === 'info' ? styles.selected_background : null,
             ]}>
             <Text
-              style={[
+              style={[ {
+                fontFamily: 'DeeDee-Bold',},
                 styles.option_text,
                 selectedOption === 'info'
                   ? styles.selected_option_text

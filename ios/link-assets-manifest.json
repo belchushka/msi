@@ -1,0 +1,45 @@
+{
+  "migIndex": 1,
+  "data": [
+    {
+      "path": "src/shared/assets/fonts/DeeDee-Bold.ttf",
+      "sha1": "ff1372bd181d2b1910931bfdad79971b6384736d"
+    },
+    {
+      "path": "src/shared/assets/fonts/DeeDee-BoldItalic.ttf",
+      "sha1": "6dea776f801c3094f3f023fe4518d351118a46eb"
+    },
+    {
+      "path": "src/shared/assets/fonts/DeeDee-Italic.ttf",
+      "sha1": "a19a86fc508db56f868c6276d08b5c5f570580c9"
+    },
+    {
+      "path": "src/shared/assets/fonts/DeeDee.ttf",
+      "sha1": "995a36de633a0b88d9af39d410c4a2b5ae81c28f"
+    },
+    {
+      "path": "src/shared/assets/fonts/DeeDeeHeavy-Italic.ttf",
+      "sha1": "f485c771aeaccc49acc080f8895d675475a5f1fc"
+    },
+    {
+      "path": "src/shared/assets/fonts/DeeDeeHeavy.ttf",
+      "sha1": "c01c43165b7399aab2dc37d3bb5fc22d65ebb964"
+    },
+    {
+      "path": "src/shared/assets/fonts/DeeDeeLight-Italic.ttf",
+      "sha1": "3322b45b37c946074594a54c29729f173102f06f"
+    },
+    {
+      "path": "src/shared/assets/fonts/DeeDeeLight.ttf",
+      "sha1": "c4bc0ffd8fdb9cf197829d14e582024ccdc893e9"
+    },
+    {
+      "path": "src/shared/assets/fonts/DeeDeeThin-Italic.ttf",
+      "sha1": "f4da6ad3f08373db717a093ac08406e26bc3d1d3"
+    },
+    {
+      "path": "src/shared/assets/fonts/DeeDeeThin.ttf",
+      "sha1": "763fd288ed18d107608f07ef10c8c4f16f255058"
+    }
+  ]
+}
