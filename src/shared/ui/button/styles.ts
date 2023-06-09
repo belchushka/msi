@@ -22,6 +22,10 @@ export default StyleSheet.create({
   button_outline: {
     backgroundColor: 'transparent',
   },
+  button_outline_green: {
+    backgroundColor: 'transparent',
+    borderColor: '#A4CE57'
+  },
   text: {
     fontSize: 20,
     fontWeight: '700',

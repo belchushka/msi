@@ -56,6 +56,12 @@ export const AddNewsPage = () => {
             {textAlignVertical: 'top', marginTop: 20, fontFamily: "DeeDee"},
           ]}
         />
+        <Button onPress={() => {
+
+        }} style={{justifyContent: 'flex-end', marginTop: 24}} variant='outline_green'>
+          Прикрепить материалы
+        </Button>
+
         <View
           style={{
             flex: 1,

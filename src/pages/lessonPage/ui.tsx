@@ -1,13 +1,17 @@
 import React from 'react';
 import styles from './styles';
-import {Text, View} from 'react-native';
+import {ScrollView, Text, View} from 'react-native';
 import {SafeView} from '@/shared/ui/safeView';
 import {Button} from '@/shared/ui';
 import Video from 'react-native-video';
+import { useNavigation } from '@react-navigation/native';
+import { ROUTES } from '@/shared/router';
 
 export const LessonPage = ({route}) => {
   const params = route.params;
   console.log(params.lession);
+
+  const navigation = useNavigation();
 
   return (
     <SafeView style={{flex: 1}}>
@@ -28,8 +32,15 @@ export const LessonPage = ({route}) => {
         <Text style={styles.status}>Пройдено</Text>
         <Text style={styles.header}>{params.lession.title}</Text>
         <Text style={styles.description}>{params.lession.description}</Text>
-        <Button style={{}} variant="primary">
-          К следующему уроку
+        <Button onPress={() => {
+
+        }} style={{justifyContent: 'flex-end', marginTop: 24}} variant='outline_green'>
+          Скачать материалы
+        </Button>
+        <Button onPress={() => {
+
+        }} style={{justifyContent: 'flex-end', marginTop: 12}} variant="primary">
+          К списку уроков
         </Button>
       </View>
     </SafeView>

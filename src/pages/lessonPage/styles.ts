@@ -16,17 +16,19 @@ export default StyleSheet.create({
   header: {
     color: 'black',
     fontSize: 32,
-    fontWeight: 'bold',
+    fontFamily: 'DeeDee-Bold',
     paddingVertical: 16,
   },
 
   description: {
     color: '#76787A',
+    fontFamily: 'DeeDeeLight',
     fontSize: 22,
   },
 
   status: {
     fontSize: 20,
+    fontFamily: 'DeeDee',
     color: '#A4CE57',
   },
 });

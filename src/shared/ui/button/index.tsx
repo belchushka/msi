@@ -25,6 +25,14 @@ const getButtonStyles = (
         },
       };
     }
+    case 'outline_green': {
+      return {
+        button: styles.button_outline_green,
+        text: {
+          color: theme.colors.green.primary,
+        },
+      };
+    }
     case 'primary': {
       return {
         button: {
