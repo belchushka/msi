@@ -1,6 +1,5 @@
 import React, {useEffect, useState} from 'react';
 import styles from './styles';
-import {useTheme} from '@/shared/theme';
 import {
   ActivityIndicator,
   ScrollView,
@@ -20,8 +19,6 @@ import {ROUTES} from '@/shared/router';
 export const CoursePage = ({route}) => {
   const {courseId} = route.params;
 
-  console.log(courseId);
-
   const [course, setCourse] = useState(null);
   const [lessons, setLessons] = useState(null);
 
@@ -35,19 +32,17 @@ export const CoursePage = ({route}) => {
     })();
   }, [courseId]);
 
-  const theme = useTheme();
-
   const [selectedOption, setSelectedOption] = useState('info');
 
   const handleOptionPress = option => {
     setSelectedOption(option);
   };
 
+  const navigation = useNavigation();
+
   if (!course) {
     return <ActivityIndicator />;
   }
-
-  const navigation = useNavigation();
 
   return (
     <SafeView style={{flex: 1}}>
@@ -69,8 +64,10 @@ export const CoursePage = ({route}) => {
               selectedOption === 'info' ? styles.selected_background : null,
             ]}>
             <Text
-              style={[ {
-                fontFamily: 'DeeDee-Bold',},
+              style={[
+                {
+                  fontFamily: 'DeeDee-Bold',
+                },
                 styles.option_text,
                 selectedOption === 'info'
                   ? styles.selected_option_text

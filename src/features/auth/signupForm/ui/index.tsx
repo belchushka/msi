@@ -8,14 +8,16 @@ import {userTypes} from '../lib';
 import {
   $currentStep,
   $quizzesCategories,
-  form,
+  form_first,
+  form_second,
+  form_third,
   formGate,
   goNext,
   goPrev,
-  submit,
 } from '../model';
 import styles from './styles';
 import BouncyCheckbox from 'react-native-bouncy-checkbox';
+import {useTheme} from '@/shared/theme';
 
 const stepTitles = [
   'Давайте знакомиться!',
@@ -23,14 +25,9 @@ const stepTitles = [
   'Выбери направлание',
 ];
 
-const stepValidFields = [
-  ['name', 'email', 'password', 'repeatPassword'],
-  ['age', 'userType'],
-  ['categories'],
-];
-
 const FirstStep = () => {
-  const {fields, hasError} = useForm(form);
+  const {fields, hasError, submit} = useForm(form_first);
+  const theme = useTheme();
   return (
     <View style={styles.firstForm_container}>
       <Input
@@ -61,25 +58,39 @@ const FirstStep = () => {
         placeholder="Повторите пароль *"
         error={hasError('repeatPassword')}
       />
-      <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 40}}>
+      <View
+        style={{
+          flexDirection: 'row',
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginTop: 40,
+        }}>
         <BouncyCheckbox
           size={25}
+          isChecked={fields.accepted_privacy.value}
           fillColor="#A5D324"
-          unfillColor="white"
-          iconStyle={{ borderColor: "white" }}
-          innerIconStyle={{ borderWidth: 0 }}
-          onPress={(isChecked: boolean) => {}}
+          unfillColor={
+            hasError('accepted_privacy') ? theme.colors.red[800] : 'white'
+          }
+          iconStyle={{borderColor: 'white'}}
+          innerIconStyle={{borderWidth: 0}}
+          onPress={fields.accepted_privacy.onChange}
         />
-        <Text style={{fontFamily: "DeeDee", fontSize: 20, color: 'white'}}>
+        <Text style={{fontFamily: 'DeeDee', fontSize: 20, color: 'white'}}>
           Согласие на обработку персональных данных
         </Text>
+      </View>
+      <View style={styles.bottomView}>
+        <Button onPress={() => submit()}>Далее</Button>
       </View>
     </View>
   );
 };
 
 const SecondStep = () => {
-  const {fields, hasError} = useForm(form);
+  const {fields, hasError, submit} = useForm(form_second);
+  const prev = useEvent(goPrev);
+
   return (
     <View style={styles.firstForm_container}>
       <Input
@@ -94,13 +105,21 @@ const SecondStep = () => {
         value={fields.userType.value}
         onSelect={fields.userType.onChange}
       />
+      <View style={styles.bottomView}>
+        <Button onPress={() => submit()}>Далее</Button>
+        <Button onPress={prev} variant="outline">
+          Назад
+        </Button>
+      </View>
     </View>
   );
 };
 
 const ThirdStep = () => {
-  const {fields} = useForm(form);
+  const {fields, submit} = useForm(form_third);
   const categories = useStore($quizzesCategories);
+  const prev = useEvent(goPrev);
+
   return (
     <View style={styles.firstForm_container}>
       <PillSelect
@@ -108,20 +127,19 @@ const ThirdStep = () => {
         value={fields.categories.value}
         onSelect={fields.categories.onChange}
       />
+      <View style={styles.bottomView}>
+        <Button onPress={() => submit()}>Далее</Button>
+        <Button onPress={prev} variant="outline">
+          Назад
+        </Button>
+      </View>
     </View>
   );
 };
 
 export const SignupForm = () => {
   const currentStep = useStore($currentStep);
-  const next = useEvent(goNext);
-  const prev = useEvent(goPrev);
-  const {hasError} = useForm(form);
-  const submitForm = useEvent(submit);
 
-  const goNextDisabled = stepValidFields[currentStep]?.some(el =>
-    hasError(el as any),
-  );
   useGate(formGate);
   return (
     <View style={[styles.container]}>
@@ -140,18 +158,6 @@ export const SignupForm = () => {
           <ThirdStep />
         </Stepper.Step>
       </Stepper>
-      <View style={styles.bottomView}>
-        <Button
-          disabled={goNextDisabled}
-          onPress={() => (currentStep < 2 ? next() : submitForm())}>
-          Далее
-        </Button>
-        {currentStep > 0 && (
-          <Button onPress={prev} variant="outline">
-            Назад
-          </Button>
-        )}
-      </View>
     </View>
   );
 };

@@ -4,6 +4,7 @@ import {$authHost, $host} from '@/shared/api';
 import DefaultPicture from '@assets/images/default_userpicture.png';
 import {
   ActivityIndicator,
+  Alert,
   Image,
   ScrollView,
   Text,
@@ -97,7 +98,6 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
 
       <View style={{flexDirection: 'row', gap: 10, marginTop: 10}}>
         <TouchableOpacity
-          hitSlop={30}
           onPress={() => {
             setLiked(state => !state);
             onLike(!liked);
@@ -141,7 +141,7 @@ const NewsCard: React.FC<INewsCard> = ({newsElement}) => {
 };
 
 const EventCard: React.FC<INewsCard> = ({newsElement}) => {
-
+  const [subscribed, setSubscribed] = useState(false);
   return (
     <View style={styles.news_container}>
       <View style={{flexDirection: 'row', alignItems: 'center'}}>
@@ -171,22 +171,32 @@ const EventCard: React.FC<INewsCard> = ({newsElement}) => {
           </Text>
         </View>
       </View>
-      <Text style={styles.news_text}>
-        {newsElement.text}
+      <Text style={styles.news_text}>{newsElement.text}</Text>
+      <Text style={[styles.news_text, {color: '#A4CE57'}]}>Адрес</Text>
+      <Text style={[styles.news_text, {color: '#000000'}]}>
+        {newsElement.address}
       </Text>
-      <Text style={[styles.news_text, {color: "#A4CE57"}]}>Адрес</Text>
-      <Text style={[styles.news_text, {color: "#000000"}]}>{newsElement.address}</Text>
-      <Text style={[styles.news_text, {color: "#A4CE57"}]}>Дата и время</Text>
-      <Text style={[styles.news_text, {color: "#000000"}]}> {new Intl.DateTimeFormat('ru-RU').format(
-              new Date(newsElement.date),
-            )}</Text>
-      <Button variant='primary' style={{alignSelf: 'stretch', marginTop: 12}}>Записаться</Button>
-    
+      <Text style={[styles.news_text, {color: '#A4CE57'}]}>Дата и время</Text>
+      <Text style={[styles.news_text, {color: '#000000'}]}>
+        {new Intl.DateTimeFormat('ru-RU').format(new Date(newsElement.date))}
+      </Text>
+      <Button
+        onPress={() => {
+          if (!subscribed) {
+            Alert.alert('Вы успешно записаны');
+          }
+          setSubscribed(state => !state);
+        }}
+        variant={subscribed ? 'outline_green' : 'primary'}
+        style={{alignSelf: 'stretch', marginTop: 12}}>
+        {subscribed ? 'Отменить запись' : 'Записаться'}
+      </Button>
     </View>
   );
 };
 
 const GrantCard: React.FC<INewsCard> = ({newsElement}) => {
+  const [subscribed, setSubscribed] = useState(false);
 
   return (
     <View style={styles.news_container}>
@@ -217,13 +227,22 @@ const GrantCard: React.FC<INewsCard> = ({newsElement}) => {
           </Text>
         </View>
       </View>
-      <Text style={styles.news_text}>
-        {newsElement.text}
+      <Text style={styles.news_text}>{newsElement.text}</Text>
+      <Text style={[styles.news_text, {color: '#A4CE57'}]}>Грант</Text>
+      <Text style={[styles.news_text, {color: '#000000'}]}>
+        {newsElement.money}
       </Text>
-      <Text style={[styles.news_text, {color: "#A4CE57"}]}>Грант</Text>
-      <Text style={[styles.news_text, {color: "#000000"}]}>{newsElement.money}</Text>
-      <Button variant='primary' style={{alignSelf: 'stretch', marginTop: 12}}>Подать заявку</Button>
-    
+      <Button
+        onPress={() => {
+          if (!subscribed) {
+            Alert.alert('Вы успешно подали заявку');
+          }
+          setSubscribed(state => !state);
+        }}
+        variant={subscribed ? 'outline_green' : 'primary'}
+        style={{alignSelf: 'stretch', marginTop: 12}}>
+        {subscribed ? 'Отменить' : 'Подать заявку'}
+      </Button>
     </View>
   );
 };
@@ -283,8 +302,6 @@ export const NewsPage = () => {
         </Container>
       </View>
 
-      
-
       <ScrollView
         contentContainerStyle={{
           flexGrow: 1,
@@ -313,72 +330,88 @@ export const NewsPage = () => {
             style={{
               gap: 6,
             }}>
-              <View
-          style={[
-            styles.swiper,
-            {flexDirection: 'row', justifyContent: 'space-between'},
-          ]}>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => handleOptionPress('main')}
-            style={[
-              styles.options_background,
-              selectedOption === 'main' ? styles.selected_background : null,
-            ]}>
-            <Text
-              style={[ {
-                fontFamily: 'DeeDee-Bold',},
-                styles.option_text,
-                selectedOption === 'main'
-                  ? styles.selected_option_text
-                  : styles.deselected_option_text,
-              ]}>
-              Для вас
-            </Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => handleOptionPress('events')}
-            style={[
-              styles.options_background,
-              selectedOption === 'events' ? styles.selected_background : null,
-            ]}>
-            <Text
+            <View
               style={[
-                styles.option_text,
-                selectedOption === 'events'
-                  ? styles.selected_option_text
-                  : styles.deselected_option_text,
+                styles.swiper,
+                {flexDirection: 'row', justifyContent: 'space-between'},
               ]}>
-              Мероприятия
-            </Text>
-          </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => handleOptionPress('main')}
+                style={[
+                  styles.options_background,
+                  selectedOption === 'main' ? styles.selected_background : null,
+                ]}>
+                <Text
+                  style={[
+                    {
+                      fontFamily: 'DeeDee-Bold',
+                    },
+                    styles.option_text,
+                    selectedOption === 'main'
+                      ? styles.selected_option_text
+                      : styles.deselected_option_text,
+                  ]}>
+                  Для вас
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => handleOptionPress('events')}
+                style={[
+                  styles.options_background,
+                  selectedOption === 'events'
+                    ? styles.selected_background
+                    : null,
+                ]}>
+                <Text
+                  style={[
+                    styles.option_text,
+                    selectedOption === 'events'
+                      ? styles.selected_option_text
+                      : styles.deselected_option_text,
+                  ]}>
+                  Мероприятия
+                </Text>
+              </TouchableOpacity>
 
-          <TouchableOpacity
-            activeOpacity={0.8}
-            onPress={() => handleOptionPress('grants')}
-            style={[
-              styles.options_background,
-              selectedOption === 'grants' ? styles.selected_background : null,
-            ]}>
-            <Text
-              style={[
-                styles.option_text,
-                selectedOption === 'grants'
-                  ? styles.selected_option_text
-                  : styles.deselected_option_text,
-              ]}>
-              Гранты
-            </Text>
-          </TouchableOpacity>
-        </View>
-        {selectedOption == "main" ? news.map((newsElement, i) => {
-              return newsElement.type == "POST" ? <NewsCard key={i} newsElement={newsElement} /> : null;
-            }) : selectedOption == "events" ? news.map((newsElement, i) => {
-              return newsElement.type == "EVENT" ? <EventCard key={i} newsElement={newsElement} /> : null;
-            }) : news.map((newsElement, i) => {
-              return newsElement.type == "ADVERTISEMENT" ? <GrantCard key={i} newsElement={newsElement} /> : null;
-            })}
+              <TouchableOpacity
+                activeOpacity={0.8}
+                onPress={() => handleOptionPress('grants')}
+                style={[
+                  styles.options_background,
+                  selectedOption === 'grants'
+                    ? styles.selected_background
+                    : null,
+                ]}>
+                <Text
+                  style={[
+                    styles.option_text,
+                    selectedOption === 'grants'
+                      ? styles.selected_option_text
+                      : styles.deselected_option_text,
+                  ]}>
+                  Гранты
+                </Text>
+              </TouchableOpacity>
+            </View>
+            {selectedOption == 'main'
+              ? news.map((newsElement, i) => {
+                  return newsElement.type == 'POST' ? (
+                    <NewsCard key={i} newsElement={newsElement} />
+                  ) : null;
+                })
+              : selectedOption == 'events'
+              ? news.map((newsElement, i) => {
+                  return newsElement.type == 'EVENT' ? (
+                    <EventCard key={i} newsElement={newsElement} />
+                  ) : null;
+                })
+              : news.map((newsElement, i) => {
+                  return newsElement.type == 'ADVERTISEMENT' ? (
+                    <GrantCard key={i} newsElement={newsElement} />
+                  ) : null;
+                })}
           </View>
         )}
       </ScrollView>

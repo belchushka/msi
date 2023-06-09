@@ -11,39 +11,39 @@ export default StyleSheet.create({
     height: 70,
     backgroundColor: 'white',
     elevation: 10,
-    shadowColor: '#00000033'
+    shadowColor: '#00000033',
   },
 
   options_background: {
-    flex: 1, 
-    alignItems: 'center', 
-    justifyContent: 'center'
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 
   selected_background: {
-      borderBottomColor: '#A4CE57',
-      borderBottomWidth: 3,
+    borderBottomColor: '#A4CE57',
+    borderBottomWidth: 3,
   },
 
   option_text: {
     fontFamily: 'DeeDee',
-    fontSize: 20
+    fontSize: 20,
   },
 
   selected_option_text: {
-      fontFamily: 'DeeDee',
-      color: '#A4CE57',
+    fontFamily: 'DeeDee',
+    color: '#A4CE57',
   },
 
   deselected_option_text: {
-      fontFamily: 'DeeDee',
-      color: 'black',
+    fontFamily: 'DeeDee',
+    color: 'black',
   },
 
   header_text: {
     fontSize: 24,
     color: 'black',
-    fontFamily: 'DeeDee-Bold'
+    fontFamily: 'DeeDee-Bold',
   },
 
   news_container: {

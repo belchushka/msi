@@ -6,7 +6,7 @@ import {useEffect, useState} from 'react';
 export const useInit = () => {
   const setIsAuth = useEvent(setIsAuthEvent);
   const [loading, setLoading] = useState(false);
-  const getMe = useEvent(AuthApi.getMeFx)
+  const getMe = useEvent(AuthApi.getMeFx);
   useEffect(() => {
     (async () => {
       setLoading(true);
@@ -14,10 +14,10 @@ export const useInit = () => {
       try {
         if (accessToken) {
           setIsAuth(true);
-          await getMe()
+          await getMe();
         }
-      }catch (e){}
-      
+      } catch (e) {}
+
       setLoading(false);
     })();
   }, []);

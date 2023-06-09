@@ -7,7 +7,6 @@ import {createForm} from 'effector-forms';
 const loginFx = attach({effect: AuthApi.loginFx});
 const getMeFx = attach({effect: AuthApi.getMeFx});
 
-
 const form = createForm({
   fields: {
     login: {
@@ -28,15 +27,17 @@ sample({
 
 sample({
   clock: loginFx.doneData,
-  target: [
-    setIsAuth.prepend(() => true),
-    getMeFx
-  ],
+  target: [setIsAuth.prepend(() => true), getMeFx],
+});
+
+sample({
+  clock: loginFx.doneData,
+  target: [setIsAuth.prepend(() => true), getMeFx],
 });
 
 sample({
   source: getMeFx.doneData,
-  target: navigateFx.prepend(()=>ROUTES.HOME)
-})
+  target: navigateFx.prepend(() => ROUTES.HOME),
+});
 
 export {form};

@@ -8,8 +8,8 @@ import {SigninForm} from '@/features/auth';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTES} from '@/shared/router';
 
-import VK from "@assets/images/vk.png"
-import Yandex from "@assets/images/yandex.png"
+import VK from '@assets/images/vk.png';
+import Yandex from '@assets/images/yandex.png';
 
 export const SigninPage = () => {
   const theme = useTheme();
@@ -52,10 +52,10 @@ export const SigninPage = () => {
             </Text>
             <View style={styles.authMethodButtons}>
               <View style={styles.authMethodButtons_button}>
-                <Image source={VK}></Image>
+                <Image source={VK} />
               </View>
               <View style={styles.authMethodButtons_button}>
-                <Image source={Yandex}></Image>
+                <Image source={Yandex} />
               </View>
             </View>
           </View>

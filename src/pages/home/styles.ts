@@ -12,9 +12,5 @@ export default StyleSheet.create({
     alignSelf: 'center',
   },
 
-  main: {
-    flex: 9,
-  },
-
   progress: {},
 });

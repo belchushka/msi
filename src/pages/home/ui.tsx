@@ -1,12 +1,11 @@
 import {Container} from '@/shared/ui';
-import React, {useEffect, useLayoutEffect, useState} from 'react';
+import React, {useEffect, useState, useLayoutEffect} from 'react';
 import {
   View,
   Text,
   ScrollView,
   Dimensions,
   Image,
-  Modal,
   ActivityIndicator,
   Vibration,
   TouchableOpacity,
@@ -27,8 +26,7 @@ import Mascot from '@assets/images/mascot_not_found.png';
 export const HomePage = () => {
   const {user} = useStore($authStore);
   const [selectedCategory, setSelectedCategory] = useState<any>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
   const [categories, setCategories] = useState([]);
 
@@ -54,12 +52,13 @@ export const HomePage = () => {
   const getCourses = () => {
     (async () => {
       setLoading(true);
-      const {data} = await $host.get('/course/coursesBy', {
-        params: {categoryid: categories.indexOf(selectedCategory)},
-      });
+      try {
+        const {data} = await $host.get('/course/coursesBy', {
+          params: {categoryid: categories.indexOf(selectedCategory)},
+        });
+        setCourses(data.data);
+      } catch (e) {}
       setLoading(false);
-
-      setCourses(data.data);
     })();
   };
 
@@ -69,41 +68,6 @@ export const HomePage = () => {
 
   return (
     <View style={{backgroundColor: '#F9FAFB', flex: 1}}>
-      <Modal
-        onRequestClose={() => {
-          setShowModal(false);
-        }}
-        visible={showModal}
-        animationType="slide">
-        <ScrollView
-          style={{flex: 1}}
-          contentContainerStyle={{
-            alignItems: 'center',
-            gap: 25,
-            paddingBottom: 60,
-            paddingTop: Dimensions.get('window').height / 2 - 100,
-          }}>
-          {categories.map(category => {
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  Vibration.vibrate(80);
-                  setSelectedCategory(category);
-                  setShowModal(false);
-                }}>
-                <Text
-                  style={{
-                    color: '#404041',
-                    fontFamily: 'DeeDee',
-                    fontSize: 30,
-                  }}>
-                  {category}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
-        </ScrollView>
-      </Modal>
       <View
         style={[
           styles.top,
@@ -120,7 +84,6 @@ export const HomePage = () => {
           <TouchableOpacity
             onPress={() => {
               Vibration.vibrate(80);
-              setShowModal(true);
             }}
             activeOpacity={0.8}
             style={{
@@ -129,7 +92,6 @@ export const HomePage = () => {
               gap: 8,
             }}>
             <Text style={styles.header}>{selectedCategory}</Text>
-            <ExpandIcon />
           </TouchableOpacity>
           <View
             style={{
@@ -170,23 +132,28 @@ export const HomePage = () => {
           </View>
         </Container>
       </View>
-      <Container style={styles.main}>
-        <ScrollView
-          contentContainerStyle={{
-            flexGrow: 1,
-            paddingVertical: 20,
-            gap: 20,
+      <ScrollView
+        style={{
+          flex: 1,
+        }}
+        contentContainerStyle={{
+          flexGrow: 1,
+          paddingVertical: 20,
+          paddingBottom: 100,
+          position: 'relative',
+        }}>
+        <Container
+          style={{
             flexDirection: 'row',
             justifyContent: 'center',
             flexWrap: 'wrap',
-            position: 'relative',
+            gap: 20,
+            flex: 1,
           }}>
           {loading && (
             <View
               style={{
                 position: 'absolute',
-                top: 0,
-                left: 0,
                 width: '100%',
                 height: '100%',
                 justifyContent: 'center',
@@ -197,12 +164,10 @@ export const HomePage = () => {
               />
             </View>
           )}
-          {courses.length === 0 && (
+          {!loading && courses.length === 0 && (
             <View
               style={{
                 position: 'absolute',
-                top: 0,
-                left: 0,
                 width: '100%',
                 height: '100%',
                 justifyContent: 'center',
@@ -259,8 +224,8 @@ export const HomePage = () => {
                 </View>
               );
             })}
-        </ScrollView>
-      </Container>
+        </Container>
+      </ScrollView>
     </View>
   );
 };

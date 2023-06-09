@@ -11,9 +11,4 @@ export const userTypes: Array<PillSelectValue<number>> = [
     label: 'Родитель',
     value: 2,
   },
-  {
-    id: 3,
-    label: 'Гость',
-    value: 3,
-  },
 ];

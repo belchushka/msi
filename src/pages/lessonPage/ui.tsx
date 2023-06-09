@@ -1,22 +1,36 @@
-import React from 'react';
+import React, {useState} from 'react';
 import styles from './styles';
-import {ScrollView, Text, View} from 'react-native';
+import {ActivityIndicator, Linking, Text, View} from 'react-native';
 import {SafeView} from '@/shared/ui/safeView';
 import {Button} from '@/shared/ui';
 import Video from 'react-native-video';
-import { useNavigation } from '@react-navigation/native';
-import { ROUTES } from '@/shared/router';
+import {useNavigation} from '@react-navigation/native';
+import {useTheme} from '@/shared/theme';
 
 export const LessonPage = ({route}) => {
   const params = route.params;
-  console.log(params.lession);
+  const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
+  const theme = useTheme();
 
   return (
     <SafeView style={{flex: 1}}>
       <View style={styles.top}>
+        {loading && (
+          <ActivityIndicator
+            style={{
+              position: 'absolute',
+              top: '50%',
+              alignSelf: 'center',
+            }}
+            size="large"
+            color={theme.colors.green.primary}
+          />
+        )}
         <Video
+          onLoadStart={() => setLoading(true)}
+          onLoad={() => setLoading(false)}
           style={{
             height: '100%',
             width: '100%',
@@ -27,19 +41,22 @@ export const LessonPage = ({route}) => {
           source={{uri: params.lession?.lessions[0]?.url}}
         />
       </View>
-
       <View style={styles.main}>
         <Text style={styles.status}>Пройдено</Text>
         <Text style={styles.header}>{params.lession.title}</Text>
         <Text style={styles.description}>{params.lession.description}</Text>
-        <Button onPress={() => {
-        
-        }} style={{justifyContent: 'flex-end', marginTop: 24}} variant='outline_green'>
+        <Button
+          onPress={() => Linking.openURL(params.lession?.lessions[0]?.url)}
+          style={{justifyContent: 'flex-end', marginTop: 24}}
+          variant="outline_green">
           Скачать материалы
         </Button>
-        <Button onPress={() => {
-          navigation.goBack();
-        }} style={{justifyContent: 'flex-end', marginTop: 12}} variant="primary">
+        <Button
+          onPress={() => {
+            navigation.goBack();
+          }}
+          style={{justifyContent: 'flex-end', marginTop: 12}}
+          variant="primary">
           К списку уроков
         </Button>
       </View>

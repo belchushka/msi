@@ -2,6 +2,7 @@ import {StyleSheet} from 'react-native';
 
 export default StyleSheet.create({
   stepper: {
+    flexDirection: 'column',
     flex: 4,
     justifyContent: 'center',
   },
@@ -14,7 +15,7 @@ export default StyleSheet.create({
     gap: 32,
   },
   bottomView: {
-    flex: 1,
+    flexGrow: 2,
     gap: 20,
     paddingBottom: 20,
   },
