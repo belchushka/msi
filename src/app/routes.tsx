@@ -23,6 +23,10 @@ import MapsIcon from '@assets/icons/Maps';
 import MapsIconActive from '@assets/icons/MapsActive';
 import ProfileIcon from '@assets/icons/Profile';
 import ProfileIconActive from '@assets/icons/ProfileActive';
+import GroupsIcon from '@assets/icons/Groups';
+import GroupsIconActive from '@assets/icons/GroupsActive';
+import ShortsIcon from '@assets/icons/Shorts';
+import ShortsActiveIcon from '@assets/icons/ShortsActive';
 import {useNavigation} from '@react-navigation/native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {CoursePage} from '@/pages/coursePage';
@@ -32,6 +36,7 @@ import {NewsPage} from '@/pages/news';
 import {ProfilePage} from '@/pages/profile';
 import {AddNewsPage} from '@/pages/addNews';
 import {OnboardingSliderPage} from '@/pages/onboardingSlider';
+import {ShortsPage} from '@/pages/shorts';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -121,6 +126,19 @@ const TabsPage = () => {
         />
         <Tab.Screen
           options={{
+            tabBarLabel: 'Shorts',
+            tabBarIcon: ({focused}) =>
+              focused ? (
+                <ShortsActiveIcon width={32} height={32} />
+              ) : (
+                <ShortsIcon width={32} height={32} />
+              ),
+          }}
+          name="Groups"
+          component={ShortsPage}
+        />
+        <Tab.Screen
+          options={{
             tabBarLabel: 'Карты',
             tabBarIcon: ({focused}) =>
               focused ? <MapsIconActive /> : <MapsIcon />,
@@ -144,24 +162,6 @@ const TabsPage = () => {
 
 export const Router = () => {
   const {isAuth} = useStore($authStore);
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    (async () => {
-      if (navigation) {
-        const onboardingSliderPassed =
-          (await AsyncStorage.getItem('onboardingSliderPassed')) === 'true';
-        if (!onboardingSliderPassed) {
-          navigation.navigate(ROUTES.ONBOARDING_SLIDER);
-        }
-        const onboardingPassed =
-          (await AsyncStorage.getItem('onboardingPassed')) === 'true';
-        if (!onboardingPassed) {
-          navigation.navigate(ROUTES.ONBOARDIBG);
-        }
-      }
-    })();
-  }, [navigation]);
 
   return (
     <Stack.Navigator

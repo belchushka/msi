@@ -19,21 +19,25 @@ function App() {
   const loading = useInit();
   const theme = useTheme();
 
-  if (loading) {
-    return (
-      <View
-        style={{
-          backgroundColor: 'white',
-          flex: 1,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <ActivityIndicator size="large" color={theme.colors.green.primary} />
-      </View>
-    );
-  }
   return (
-    <GestureHandlerRootView style={{flex: 1}}>
+    <GestureHandlerRootView style={{flex: 1, position: 'relative'}}>
+      {loading && (
+        <View
+          style={{
+            backgroundColor: 'white',
+            flex: 1,
+            alignItems: 'center',
+            justifyContent: 'center',
+            position: 'absolute',
+            width: '100%',
+            top: 0,
+            left: 0,
+            height: '100%',
+            zIndex: 1000,
+          }}>
+          <ActivityIndicator size="large" color={theme.colors.green.primary} />
+        </View>
+      )}
       <SafeAreaView style={styles.mainContainer}>
         <StatusBar
           barStyle="light-content"

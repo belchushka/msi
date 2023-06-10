@@ -15,6 +15,7 @@ export enum ROUTES {
   PROFILE_PAGE = 'profile_page',
   CREATE_NEWS = 'create_news',
   ONBOARDING_SLIDER = 'onboarding_slider',
+  SHORTS = 'shorts',
 }
 
 const navigationRef = createNavigationContainerRef();

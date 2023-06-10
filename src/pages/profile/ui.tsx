@@ -27,6 +27,7 @@ import {$authHost, $host} from '@/shared/api';
 import {View} from 'react-native';
 import Ach1 from '@assets/images/achievement1.png';
 import Ach2 from '@assets/images/rating.png';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export const ProfilePage = () => {
   const {user} = useStore($authStore);
@@ -103,6 +104,8 @@ export const ProfilePage = () => {
         },
       });
       setUser(userData.data);
+      await AsyncStorage.removeItem("onboardingPassed");
+      navigation.navigate(ROUTES.ONBOARDIBG)
     } catch (e) {
       console.log(e);
       Alert.alert(e);

@@ -3,7 +3,7 @@ import styles from './styles';
 import {ActivityIndicator, Linking, Text, View} from 'react-native';
 import {SafeView} from '@/shared/ui/safeView';
 import {Button} from '@/shared/ui';
-import Video from 'react-native-video';
+import {ResizeMode, Video} from 'expo-av';
 import {useNavigation} from '@react-navigation/native';
 import {useTheme} from '@/shared/theme';
 
@@ -35,8 +35,9 @@ export const LessonPage = ({route}) => {
             height: '100%',
             width: '100%',
           }}
-          resizeMode="contain"
-          controls
+          resizeMode={ResizeMode.CONTAIN}
+          useNativeControls
+          shouldPlay
           onError={console.log}
           source={{uri: params.lession?.lessions[0]?.url}}
         />
