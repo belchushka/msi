@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import styles from './styles';
-import {Text, View} from 'react-native';
+import {Alert, Text, View} from 'react-native';
 import {SafeView} from '@/shared/ui/safeView';
 import {Button} from '@/shared/ui';
 import {useNavigation} from '@react-navigation/native';
@@ -16,9 +16,15 @@ interface IAnswerForm extends IWithStyle {
   answer: string;
   onPress: () => void;
   selected: boolean;
+  invalid: boolean;
 }
 
-const AnswerForm: React.FC<IAnswerForm> = ({answer, onPress, selected}) => {
+const AnswerForm: React.FC<IAnswerForm> = ({
+  answer,
+  onPress,
+  selected,
+  invalid,
+}) => {
   const theme = useTheme();
   return (
     <TouchableOpacity
@@ -27,6 +33,7 @@ const AnswerForm: React.FC<IAnswerForm> = ({answer, onPress, selected}) => {
       style={[
         styles.answerContainer,
         selected && {borderColor: theme.colors.oceanic['400']},
+        invalid && {borderColor: theme.colors.red[800]},
       ]}>
       <Text style={styles.answerText}>{answer}</Text>
     </TouchableOpacity>
@@ -38,12 +45,23 @@ export const QuizzisPage = ({route}) => {
   const [questionId, setQuestionId] = useState(0);
   const [selectedAnswers, setSelectedAnswers] = useState([]);
   const getMe = useEvent(AuthApi.getMeFx);
+  const [isInvalid, setIsInvalid] = useState(false);
 
   const navigation = useNavigation();
   const theme = useTheme();
 
   const handleButtonClick = async () => {
     if (questionId < questions.length - 1) {
+      if (
+        questions[questionId].correct_answer !== selectedAnswers[questionId]
+      ) {
+        setIsInvalid(true);
+        setTimeout(() => {
+          setQuestionId(state => ++state);
+          setIsInvalid(false);
+        }, 500);
+        return;
+      }
       setQuestionId(state => ++state);
     } else {
       try {
@@ -52,6 +70,7 @@ export const QuizzisPage = ({route}) => {
           answers: selectedAnswers.map(el => ({answer: el})),
         });
         await getMe();
+        Alert.alert('Тест умпешно пройден, скоро вам начислят баллы');
         navigation.goBack();
       } catch (e) {}
     }
@@ -94,7 +113,11 @@ export const QuizzisPage = ({route}) => {
           {currentQuestion.answers.map((el, num) => {
             return (
               <AnswerForm
-                selected={selectedAnswers[questionId] === el}
+                invalid={selectedAnswers[questionId] === el && isInvalid}
+                selected={
+                  selectedAnswers[questionId] === el ||
+                  (isInvalid && questions[questionId].correct_answer === el)
+                }
                 key={num}
                 answer={el}
                 onPress={() =>

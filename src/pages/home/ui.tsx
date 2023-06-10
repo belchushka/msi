@@ -1,5 +1,5 @@
 import {Container} from '@/shared/ui';
-import React, {useEffect, useState, useLayoutEffect} from 'react';
+import React, {useEffect, useState, useLayoutEffect, useMemo} from 'react';
 import {
   View,
   Text,
@@ -9,6 +9,7 @@ import {
   ActivityIndicator,
   Vibration,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import styles from './styles';
 import {useTheme} from '@/shared/theme';
@@ -65,6 +66,15 @@ export const HomePage = () => {
   useEffect(() => {
     getCourses();
   }, [selectedCategory, categories]);
+
+  const [score, level] = useMemo(() => {
+    if (user) {
+      const level = user.score >= 500 ? Math.floor(user.score / 500) : 1;
+      const score = user.score % 500;
+      return [score, level];
+    }
+    return [0, 1];
+  }, [user]);
 
   return (
     <View style={{backgroundColor: '#F9FAFB', flex: 1}}>
@@ -198,6 +208,7 @@ export const HomePage = () => {
           )}
           {!loading &&
             courses.map((course, i) => {
+              const disabled = level < 3 && i >= 3;
               return (
                 <View
                   style={{
@@ -207,6 +218,7 @@ export const HomePage = () => {
                         ? '100%'
                         : (Dimensions.get('window').width - 80) / 2,
                     alignItems: 'center',
+                    ...(disabled && {opacity: 0.4}),
                   }}>
                   <CourseCard
                     active_icon={course.active_icon}
@@ -216,9 +228,15 @@ export const HomePage = () => {
                     isDone={true}
                     title={course.title}
                     onPress={() => {
-                      navigation.navigate(ROUTES.COURSE_SCREEN, {
-                        courseId: course.id,
-                      });
+                      if (!disabled) {
+                        navigation.navigate(ROUTES.COURSE_SCREEN, {
+                          courseId: course.id,
+                        });
+                      } else {
+                        Alert.alert(
+                          'Дойдите до 3 уровня. Для этого вам нужно набрать 1500 очков',
+                        );
+                      }
                     }}
                   />
                 </View>

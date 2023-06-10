@@ -37,12 +37,7 @@ const VerticalSlider = ({data, resultSubmitVisible}) => {
       visibility.value = 1;
     }
   }, [video, resultSubmitVisible]);
-  useFocusEffect(() => {
-    return () => {
-      video.current[currentSlide].video.stopAsync();
-      visibility.value = 1;
-    };
-  }, []);
+
   const panGestureEvent = useCallback(
     ({nativeEvent}) => {
       const translation = nativeEvent.translationY;
