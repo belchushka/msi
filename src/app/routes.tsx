@@ -38,6 +38,7 @@ import {AddNewsPage} from '@/pages/addNews';
 import {OnboardingSliderPage} from '@/pages/onboardingSlider';
 import {ShortsPage} from '@/pages/shorts';
 import {QuizzisPage} from '@/pages/quizzisPage';
+import { SchoolPage } from '@/pages/schoolPage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -190,6 +191,7 @@ export const Router = () => {
           <Stack.Screen name={ROUTES.LESSON_SCREEN} component={LessonPage} />
           <Stack.Screen name={ROUTES.MAP_SCREEN} component={MapPage} />
           <Stack.Screen name={ROUTES.CREATE_NEWS} component={AddNewsPage} />
+          <Stack.Screen name={ROUTES.SCHOOL_SCREEN} component={SchoolPage} />
         </>
       )}
     </Stack.Navigator>

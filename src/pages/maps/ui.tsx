@@ -16,6 +16,9 @@ import {$authHost} from '@/shared/api';
 import {useTheme} from '@/shared/theme';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Button, Container} from '@/shared/ui';
+import { ROUTES } from '@/shared/router';
+import { useNavigation } from '@react-navigation/native';
+
 
 export const MapPage = () => {
   const [schools, setSchools] = useState([]);
@@ -25,6 +28,9 @@ export const MapPage = () => {
 
   const bottomSheetRef = useRef<BottomSheet>(null);
   const theme = useTheme();
+  const navigation = useNavigation();
+
+
 
   const snapPoints = useMemo(() => ['1%', '30%', '60%'], []);
 
@@ -209,6 +215,13 @@ export const MapPage = () => {
               onPress={() => setShowModal(true)}
               variant="primary">
               Записаться на занятие
+            </Button>
+            <Button style={{marginTop: 12}} variant="outline_green" onPress={() => {
+              navigation.navigate(ROUTES.SCHOOL_SCREEN, {
+                school: selectedSchool,
+              });
+            }}>
+              Подробнее о школе
             </Button>
           </View>
         )}

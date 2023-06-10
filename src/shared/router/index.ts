@@ -17,6 +17,7 @@ export enum ROUTES {
   ONBOARDING_SLIDER = 'onboarding_slider',
   SHORTS = 'shorts',
   QUIZZIS_PAGE = 'quizzis',
+  SCHOOL_SCREEN = "school"
 }
 
 const navigationRef = createNavigationContainerRef();
