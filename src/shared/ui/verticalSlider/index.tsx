@@ -21,6 +21,7 @@ import {ResizeMode, Video} from 'expo-av';
 import PlayImage from '@assets/images/play.png';
 import {Container} from '../container';
 import {useFocusEffect} from '@react-navigation/native';
+import SchoolImage from "@assets/images/school_icon.png"
 
 const height = Math.round(Dimensions.get('window').height);
 
@@ -191,10 +192,22 @@ const VerticalSlider = ({data, resultSubmitVisible}) => {
                     <Container
                       style={{
                         position: 'absolute',
-                        bottom: 90,
+                        bottom: 65,
+                        backgroundColor: "#0000004D",
+                        paddingBottom: 20,
                         width: '100%',
                       }}>
-                      <Text>Hello</Text>
+                      <View style={{}}>
+                        <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                          <Image source={SchoolImage}></Image>
+                          <Text style={{fontFamily: 'DeeDee-Bold', fontSize: 20}}>
+                            МШИ в Митино
+                          </Text>
+                        </View>
+                        <Text style={{fontFamily: 'DeeDee', fontSize: 16, marginHorizontal: 20}}>
+                          Курс по гитарному мастерству для начинающих. Переходите в раздел курсов и осваивайте новый и полезный навык! <Text style={{fontFamily: 'DeeDee-Bold', color: '#BFDD47'}}>#мши #искусство #образование</Text>
+                        </Text>
+                      </View>
                     </Container>
                   </TouchableOpacity>
                 </View>
