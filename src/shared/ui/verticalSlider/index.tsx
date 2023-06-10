@@ -174,7 +174,7 @@ const VerticalSlider = ({data, resultSubmitVisible}) => {
                         height: '100%',
                       }}
                       source={{
-                        uri: 'http://campfire.ext-it.ru:4088/5721713452426673-Rick%20Astley%20-%20Never%20Gonna%20Give%20You%20Up%20%28Official%20Music%20Video%29.mp4',
+                        uri: el,
                       }}
                       isLooping
                       resizeMode={ResizeMode.COVER}
