@@ -37,6 +37,7 @@ import {ProfilePage} from '@/pages/profile';
 import {AddNewsPage} from '@/pages/addNews';
 import {OnboardingSliderPage} from '@/pages/onboardingSlider';
 import {ShortsPage} from '@/pages/shorts';
+import {QuizzisPage} from '@/pages/quizzisPage';
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -182,6 +183,7 @@ export const Router = () => {
       ) : (
         <>
           <Stack.Screen name={ROUTES.HOME} component={TabsPage} />
+          <Stack.Screen name={ROUTES.QUIZZIS_PAGE} component={QuizzisPage} />
           <Stack.Screen name={ROUTES.ONBOARDIBG} component={OnboardingPage} />
           <Stack.Screen name={ROUTES.ONBOARDING_TEST} component={TestScreen} />
           <Stack.Screen name={ROUTES.COURSE_SCREEN} component={CoursePage} />

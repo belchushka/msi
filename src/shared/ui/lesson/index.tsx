@@ -22,3 +22,21 @@ export const Lesson: React.FC<ILesson> = ({title, image, style, ...props}) => {
     </View>
   );
 };
+
+export const Quizzis: React.FC<ILesson> = ({title, style, ...props}) => {
+  const theme = useTheme();
+  return (
+    <View
+      {...props}
+      style={[
+        style,
+        styles.container,
+        {
+          borderColor: theme.colors.dark[100],
+          backgroundColor: theme.colors.green.primary,
+        },
+      ]}>
+      <Text style={[styles.header, {color: 'white'}]}>{title}</Text>
+    </View>
+  );
+};

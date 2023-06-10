@@ -26,5 +26,6 @@ export default StyleSheet.create({
     color: 'black',
     flexDirection: 'row',
     flex: 1,
+    fontFamily: 'DeeDee',
   },
 });

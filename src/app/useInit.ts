@@ -1,8 +1,4 @@
-import {
-  $authStore,
-  AuthApi,
-  setIsAuth as setIsAuthEvent,
-} from '@/entities/auth';
+import {AuthApi, setIsAuth as setIsAuthEvent} from '@/entities/auth';
 import {ROUTES} from '@/shared/router';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {useNavigation} from '@react-navigation/native';
@@ -14,7 +10,6 @@ export const useInit = () => {
   const [loading, setLoading] = useState(false);
   const getMe = useEvent(AuthApi.getMeFx);
   const navigation = useNavigation();
-  const {isAuth} = useStore($authStore);
 
   useEffect(() => {
     (async () => {

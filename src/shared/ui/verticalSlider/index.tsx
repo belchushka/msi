@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Image,
+  Text,
 } from 'react-native';
 import {
   GestureHandlerRootView,
@@ -18,6 +19,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import {ResizeMode, Video} from 'expo-av';
 import PlayImage from '@assets/images/play.png';
+import {Container} from '../container';
+import {useFocusEffect} from '@react-navigation/native';
 
 const height = Math.round(Dimensions.get('window').height);
 
@@ -34,6 +37,12 @@ const VerticalSlider = ({data, resultSubmitVisible}) => {
       visibility.value = 1;
     }
   }, [video, resultSubmitVisible]);
+  useFocusEffect(() => {
+    return () => {
+      video.current[currentSlide].video.stopAsync();
+      visibility.value = 1;
+    };
+  }, []);
   const panGestureEvent = useCallback(
     ({nativeEvent}) => {
       const translation = nativeEvent.translationY;
@@ -184,6 +193,14 @@ const VerticalSlider = ({data, resultSubmitVisible}) => {
                         }}
                       />
                     </Animated.View>
+                    <Container
+                      style={{
+                        position: 'absolute',
+                        bottom: 90,
+                        width: '100%',
+                      }}>
+                      <Text>Hello</Text>
+                    </Container>
                   </TouchableOpacity>
                 </View>
               );

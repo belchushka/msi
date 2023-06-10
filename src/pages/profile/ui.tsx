@@ -104,8 +104,8 @@ export const ProfilePage = () => {
         },
       });
       setUser(userData.data);
-      await AsyncStorage.removeItem("onboardingPassed");
-      navigation.navigate(ROUTES.ONBOARDIBG)
+      await AsyncStorage.removeItem('onboardingPassed');
+      navigation.navigate(ROUTES.ONBOARDIBG);
     } catch (e) {
       console.log(e);
       Alert.alert(e);
@@ -123,6 +123,15 @@ export const ProfilePage = () => {
 
     return DefaultPicture;
   }, [selectedAvatar, user]);
+
+  const [score, level] = useMemo(() => {
+    if (user) {
+      const level = user.score >= 500 ? Math.floor(user.score / 500) : 1;
+      const score = user.score % 500;
+      return [score, level];
+    }
+    return [0, 1];
+  }, [user]);
 
   return (
     <View style={{flex: 1}}>
@@ -206,7 +215,7 @@ export const ProfilePage = () => {
                 marginBottom: 12,
                 fontFamily: 'DeeDee',
               }}>
-              Уровень 1
+              Уровень {level}
             </Text>
 
             <Progress.Bar
@@ -215,7 +224,7 @@ export const ProfilePage = () => {
               borderColor="transparent"
               color={theme.colors.green.primary}
               height={20}
-              progress={0.2}
+              progress={score / 500}
               unfilledColor={theme.colors.dark['100']}
             />
           </View>
@@ -249,13 +258,20 @@ export const ProfilePage = () => {
               {user?.categories.data?.[0]?.label}
             </Text>
           </TouchableOpacity>
-        
-          <Image source={Ach1} style={{width: '100%', height: 300, resizeMode: 'contain',}}></Image>
-          <Image source={Ach2} style={{width: '100%', height: 200, resizeMode: 'contain', marginTop: 12}}></Image>
-          
-        
+          <Image
+            source={Ach1}
+            style={{width: '100%', height: 300, resizeMode: 'contain'}}
+          />
+          <Image
+            source={Ach2}
+            style={{
+              width: '100%',
+              height: 200,
+              resizeMode: 'contain',
+              marginTop: 12,
+            }}
+          />
         </Container>
-        
       </ScrollView>
     </View>
   );

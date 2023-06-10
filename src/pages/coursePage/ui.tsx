@@ -11,7 +11,7 @@ import {
 import {SafeView} from '@/shared/ui/safeView';
 
 import UserIcon from '@assets/icons/UserAmount';
-import {Lesson} from '@/shared/ui/lesson';
+import {Lesson, Quizzis} from '@/shared/ui/lesson';
 import {$host} from '@/shared/api';
 import {useNavigation} from '@react-navigation/native';
 import {ROUTES} from '@/shared/router';
@@ -121,6 +121,19 @@ export const CoursePage = ({route}) => {
           <View style={styles.base_info}>
             <ScrollView showsVerticalScrollIndicator={false}>
               {lessons.map(lession => {
+                if (lession.type === 'quizzes') {
+                  return (
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      onPress={() => {
+                        navigation.navigate(ROUTES.QUIZZIS_PAGE, {
+                          quizzis: lession,
+                        });
+                      }}>
+                      <Quizzis title={lession.title} />
+                    </TouchableOpacity>
+                  );
+                }
                 return (
                   <TouchableOpacity
                     activeOpacity={0.8}
